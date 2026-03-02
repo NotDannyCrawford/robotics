@@ -1026,24 +1026,38 @@ class NAOSimulator {
   }
 
   /**
+   * Convert a NAO-convention joint angle to the 3D model rotation value.
+   * NAO ShoulderPitch 0 = arm horizontal forward; model rotation.x 0 = arm straight down.
+   * The offset is π/2 for ShoulderPitch joints.
+   */
+  _naoToModel(jointName, angle) {
+    if (jointName === 'LShoulderPitch' || jointName === 'RShoulderPitch') {
+      return angle - Math.PI / 2;
+    }
+    return angle;
+  }
+
+  /**
    * Set a target joint angle (radians). The joint will smoothly animate
    * toward this angle in 'pose' mode.
    * Joint names match NAO V6: HeadYaw, HeadPitch, LShoulderPitch, etc.
    * @param {string} jointName
-   * @param {number} angle - target angle in radians
+   * @param {number} angle - target angle in radians (NAO convention)
    * @param {number} [duration] - optional time in seconds to reach the angle
    */
   setJointAngle(jointName, angle, duration) {
     const joint = this.joints[jointName];
     if (!joint) return;
 
-    this.jointTargets[jointName] = angle;
+    // Convert NAO angle convention to model rotation
+    const modelAngle = this._naoToModel(jointName, angle);
+    this.jointTargets[jointName] = modelAngle;
 
     // Calculate speed based on how far the joint needs to travel and the desired duration
     if (duration && duration > 0) {
       const axis = this._jointAxis(jointName);
       const currentAngle = joint.rotation[axis];
-      const distance = Math.abs(angle - currentAngle);
+      const distance = Math.abs(modelAngle - currentAngle);
       this.jointSpeeds[jointName] = Math.max(0.5, distance / duration);
     } else {
       this.jointSpeeds[jointName] = 3.0; // fast default

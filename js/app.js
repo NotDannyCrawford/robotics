@@ -548,7 +548,7 @@ tts.say("Arms to one side. Weight shifts, less balanced!")
 motion.angleInterpolation(
     ["LShoulderPitch", "RShoulderPitch",
      "LShoulderRoll", "RShoulderRoll"],
-    [0.0, 0.0, 0.8, 0.8],
+    [0.0, 0.0, -0.5, -1.0],
     [1.0, 1.0, 1.0, 1.0], True)
 
 tts.say("Back to a stable pose.")
