@@ -38,6 +38,10 @@ class NAOSimulator {
     // Visual mesh parts for animation effects (eyes, mouth, etc.)
     this.parts = {};
 
+    // Joint target angles for 'pose' mode — smoothly interpolated each frame
+    this.jointTargets = {};    // { jointName: targetAngle }
+    this.jointSpeeds = {};     // { jointName: speed } (radians per second)
+
     // Movement state — tracks robot heading and position for visual turn/walk
     this.heading = 0;            // cumulative heading in radians
     this._move = null;           // active movement: { type, startVal, endVal, startTime, duration, callback }
@@ -560,7 +564,9 @@ class NAOSimulator {
     // Process active movement (turn/walk interpolation)
     this._updateMovement();
 
-    if (this.currentAnimation === 'idle') {
+    if (this.currentAnimation === 'pose') {
+      this.animatePose();
+    } else if (this.currentAnimation === 'idle') {
       this.animateIdle();
     } else if (this.currentAnimation === 'talking') {
       this.animateTalking();
@@ -591,6 +597,13 @@ class NAOSimulator {
 
   animateIdle() {
     const t = this.animationTime;
+
+    // If we have active joint targets, use pose mode instead of resetting
+    if (Object.keys(this.jointTargets).length > 0) {
+      this.animatePose();
+      return;
+    }
+
     this._resetJoints();
 
     // Subtle breathing: slight torso lift
@@ -603,19 +616,62 @@ class NAOSimulator {
     }
   }
 
+  /**
+   * Pose mode: smoothly interpolate each joint toward its target angle.
+   * Does NOT call _resetJoints() — preserves manually-set joint positions.
+   */
+  animatePose() {
+    const dt = 0.016; // ~60fps frame time
+    const defaultSpeed = 2.0; // radians per second (smooth but visible)
+
+    for (const name in this.jointTargets) {
+      const joint = this.joints[name];
+      if (!joint) continue;
+
+      const target = this.jointTargets[name];
+      const speed = this.jointSpeeds[name] || defaultSpeed;
+      const maxDelta = speed * dt;
+
+      // Use the explicit axis lookup
+      const axis = this._jointAxis(name);
+
+      const current = joint.rotation[axis];
+      const diff = target - current;
+
+      if (Math.abs(diff) < 0.005) {
+        // Close enough — snap to target
+        joint.rotation[axis] = target;
+      } else {
+        // Lerp toward target
+        joint.rotation[axis] = current + Math.sign(diff) * Math.min(Math.abs(diff), maxDelta);
+      }
+    }
+
+    // Subtle breathing while posing (keep it alive)
+    if (this.parts.torso) {
+      const t = this.animationTime;
+      this.parts.torso.position.y = 0.333 + Math.sin(t * 1.5) * 0.001;
+    }
+  }
+
   animateTalking() {
     const t = this.animationTime;
-    this._resetJoints();
 
-    // Head bobs (HeadPitch nods, HeadYaw slight sway)
-    if (this.joints.HeadYaw) {
-      this.joints.HeadYaw.rotation.y = Math.sin(t * 1.2) * 0.06;
-    }
-    if (this.joints.HeadPitch) {
-      this.joints.HeadPitch.rotation.x = Math.sin(t * 3) * 0.04;
+    // If we have joint targets, preserve them (pose + talk mode)
+    if (Object.keys(this.jointTargets).length > 0) {
+      this.animatePose();
+    } else {
+      this._resetJoints();
+      // Default head bobs only when no custom pose is active
+      if (this.joints.HeadYaw) {
+        this.joints.HeadYaw.rotation.y = Math.sin(t * 1.2) * 0.06;
+      }
+      if (this.joints.HeadPitch) {
+        this.joints.HeadPitch.rotation.x = Math.sin(t * 3) * 0.04;
+      }
     }
 
-    // Mouth flaps
+    // Mouth flaps (always animate during speech)
     if (this.parts.mouth) {
       this.parts.mouth.scale.y = 1 + Math.abs(Math.sin(t * 12)) * 2;
     }
@@ -632,8 +688,6 @@ class NAOSimulator {
     if (this.parts.rightEye) {
       this.parts.rightEye.material.emissiveIntensity = 0.3 + Math.sin(t * 8) * 0.2;
     }
-
-    // Arms stay at rest — no arm movement unless code commands it
   }
 
   animateWaving() {
@@ -904,6 +958,9 @@ class NAOSimulator {
   stopAnimation() {
     this.currentAnimation = 'idle';
     this._move = null;
+    // Clear all joint targets
+    this.jointTargets = {};
+    this.jointSpeeds = {};
     // Reset eye colors back to default cyan
     const defaultColor = new THREE.Color(0x00e5ff);
     if (this.parts.leftEye) {
@@ -926,6 +983,8 @@ class NAOSimulator {
   resetPosition() {
     this.heading = 0;
     this._move = null;
+    this.jointTargets = {};
+    this.jointSpeeds = {};
     if (this.robot) {
       this.robot.position.set(0, 0, 0);
       this.robot.rotation.y = 0;
@@ -933,21 +992,79 @@ class NAOSimulator {
   }
 
   /**
-   * Set a specific joint angle (radians).
-   * Joint names match NAO V6: HeadYaw, HeadPitch, LShoulderPitch, etc.
+   * Get the rotation axis character ('x', 'y', or 'z') for a given joint.
+   * Based on the actual 3D model hierarchy — NOT a simple name-based rule,
+   * because some joints (ElbowRoll, WristYaw) use a different axis than
+   * their name implies due to the kinematic chain orientation.
    */
-  setJointAngle(jointName, angle) {
+  _jointAxis(jointName) {
+    // Explicit lookup for joints whose axis differs from the name convention
+    const AXIS_MAP = {
+      // Head
+      HeadYaw: 'y', HeadPitch: 'x',
+      // Shoulders
+      LShoulderPitch: 'x', RShoulderPitch: 'x',
+      LShoulderRoll: 'z',  RShoulderRoll: 'z',
+      // Elbows — ElbowRoll uses X (bend), not Z!
+      LElbowYaw: 'y',  RElbowYaw: 'y',
+      LElbowRoll: 'x',  RElbowRoll: 'x',
+      // Wrists — WristYaw uses Z in this model, not Y!
+      LWristYaw: 'z', RWristYaw: 'z',
+      // Hands
+      LHand: 'x', RHand: 'x',
+      // Hips
+      LHipYawPitch: 'y',
+      LHipRoll: 'z',  RHipRoll: 'z',
+      LHipPitch: 'x', RHipPitch: 'x',
+      // Knees
+      LKneePitch: 'x', RKneePitch: 'x',
+      // Ankles
+      LAnklePitch: 'x', RAnklePitch: 'x',
+      LAnkleRoll: 'z',  RAnkleRoll: 'z',
+    };
+    return AXIS_MAP[jointName] || (jointName.includes('Pitch') ? 'x' : jointName.includes('Yaw') ? 'y' : 'z');
+  }
+
+  /**
+   * Set a target joint angle (radians). The joint will smoothly animate
+   * toward this angle in 'pose' mode.
+   * Joint names match NAO V6: HeadYaw, HeadPitch, LShoulderPitch, etc.
+   * @param {string} jointName
+   * @param {number} angle - target angle in radians
+   * @param {number} [duration] - optional time in seconds to reach the angle
+   */
+  setJointAngle(jointName, angle, duration) {
     const joint = this.joints[jointName];
     if (!joint) return;
 
-    // Map joint name to the correct rotation axis
-    if (jointName.includes('Yaw')) {
-      joint.rotation.y = angle;
-    } else if (jointName.includes('Roll')) {
-      joint.rotation.z = angle;
-    } else if (jointName.includes('Pitch')) {
-      joint.rotation.x = angle;
+    this.jointTargets[jointName] = angle;
+
+    // Calculate speed based on how far the joint needs to travel and the desired duration
+    if (duration && duration > 0) {
+      const axis = this._jointAxis(jointName);
+      const currentAngle = joint.rotation[axis];
+      const distance = Math.abs(angle - currentAngle);
+      this.jointSpeeds[jointName] = Math.max(0.5, distance / duration);
+    } else {
+      this.jointSpeeds[jointName] = 3.0; // fast default
     }
+
+    // Switch to pose mode (preserves joint angles)
+    if (this.currentAnimation !== 'walking' && this.currentAnimation !== 'turning') {
+      this.currentAnimation = 'pose';
+    }
+  }
+
+  /**
+   * Set all joints to target angle 0 (standing neutral) with smooth animation.
+   */
+  resetJointsSmooth(duration) {
+    const speed = duration || 0.8;
+    for (const name in this.joints) {
+      this.jointTargets[name] = 0;
+      this.jointSpeeds[name] = 2.0 / speed;
+    }
+    this.currentAnimation = 'pose';
   }
 
   /**

@@ -676,7 +676,9 @@ class NaoEditor {
       if (index >= actions.length) {
         this.log('Done!');
         if (this.simulator) {
-          setTimeout(() => this.simulator.stopAnimation(), 500);
+          // Smoothly return to standing pose, then stop after a delay
+          this.simulator.resetJointsSmooth(1.0);
+          setTimeout(() => this.simulator.stopAnimation(), 2000);
         }
         this.isSpeaking = false;
         return;
@@ -746,7 +748,8 @@ class NaoEditor {
           if (action.posture === 'Sit') {
             this.simulator.setAnimation('sitting');
           } else {
-            this.simulator.setAnimation('idle');
+            // "Stand" or any other posture: smoothly reset all joints to neutral
+            this.simulator.resetJointsSmooth(0.6);
           }
         }
         setTimeout(() => {
@@ -759,20 +762,24 @@ class NaoEditor {
         const anglesDeg = action.angles.map(a => (a * 180 / Math.PI).toFixed(1) + '\u00B0');
         this.log(`NAO joints [${jointNames}] \u2192 [${anglesDeg.join(', ')}]`);
 
+        const maxTime = Math.max(...action.times);
+
         if (this.simulator) {
-          // Actually move each joint on the 3D model
+          // Set target angles on the 3D model — simulator smoothly animates to them
           for (let i = 0; i < action.names.length; i++) {
             const name = action.names[i];
             const angle = action.angles[i] !== undefined ? action.angles[i] : 0;
-            this.simulator.setJointAngle(name, angle);
+            const time = action.times[i] !== undefined ? action.times[i] : maxTime;
+            this.simulator.setJointAngle(name, angle, time);
           }
         }
 
-        const maxTime = Math.max(...action.times) * 1000;
+        // Wait for the animation to play out, then proceed
+        const waitMs = Math.max(400, maxTime * 1000);
         setTimeout(() => {
           if (this._stopped) return;
-          setTimeout(next, 200);
-        }, Math.max(500, maxTime));
+          next();
+        }, waitMs);
 
       } else if (action.type === 'led') {
         const colorInt = action.color & 0xFFFFFF;
