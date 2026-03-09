@@ -17,7 +17,7 @@
     NAO Robotics <span>Interactive Learning Platform</span>
   </div>
   <div class="topbar-links">
-    <a href="downloads/pynaoqi-python2.7-2.8.6.23-mac64-20191127_144231.tar.gz" class="download-btn" download>Download NAOqi SDK</a>
+    <a href="https://maxtronics.com/en/support/kb/nao6/downloads/nao6-software-downloads/" class="download-btn" target="_blank">Download NAOqi SDK</a>
   </div>
 </div>
 
@@ -234,7 +234,7 @@ Python 2.7.18</code>
     <h2>Step 2: Download the NAOqi SDK</h2>
     <p>Download the Python NAOqi SDK from the button below (or use the link in the top navigation bar):</p>
     <p>
-      <a href="downloads/pynaoqi-python2.7-2.8.6.23-mac64-20191127_144231.tar.gz" class="btn btn-primary" download>Download NAOqi Python SDK (Mac 64-bit, ~614MB)</a>
+      <a href="https://maxtronics.com/en/support/kb/nao6/downloads/nao6-software-downloads/" class="btn btn-primary" target="_blank">Download NAOqi Python SDK</a>
     </p>
 
     <div class="callout callout-info">
@@ -349,6 +349,7 @@ tts.say("Hello World!")</code></pre>
           <button class="btn btn-run" onclick="editors['tts-editor'] && editors['tts-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['tts-editor'] && editors['tts-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['tts-editor'] && editors['tts-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('tts-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-tts"></div>
@@ -413,6 +414,7 @@ tts.say("I sound different now!")</code></pre>
           <button class="btn btn-run" onclick="editors['voice-editor'] && editors['voice-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['voice-editor'] && editors['voice-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['voice-editor'] && editors['voice-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('voice-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-voice"></div>
@@ -493,6 +495,7 @@ tts.say(f"I can {abilities}!")</code></pre>
           <button class="btn btn-run" onclick="editors['vars-editor'] && editors['vars-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['vars-editor'] && editors['vars-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['vars-editor'] && editors['vars-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('vars-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-vars"></div>
@@ -539,6 +542,7 @@ for line in lines:
             <button class="btn btn-run" onclick="editors['ex1-editor'] && editors['ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['ex1-editor'] && editors['ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['ex1-editor'] && editors['ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-ex1"></div>
@@ -581,6 +585,7 @@ tts.say("Nice to meet you all!")</code></pre>
             <button class="btn btn-run" onclick="editors['ex2-editor'] && editors['ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['ex2-editor'] && editors['ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['ex2-editor'] && editors['ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-ex2"></div>
@@ -641,6 +646,7 @@ tts.say("Of course! Let us explore together!")</code></pre>
             <button class="btn btn-run" onclick="editors['ex3-editor'] && editors['ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['ex3-editor'] && editors['ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['ex3-editor'] && editors['ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-ex3"></div>
@@ -952,6 +958,7 @@ motion.setExternalCollisionProtectionEnabled("Legs", True)</code></pre>
           <button class="btn btn-run" onclick="editors['nao-walk-editor'] && editors['nao-walk-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['nao-walk-editor'] && editors['nao-walk-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['nao-walk-editor'] && editors['nao-walk-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('nao-walk-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-nao-walk"></div>
@@ -1166,6 +1173,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
           <button class="btn btn-run" onclick="editors['walk-python-editor'] && editors['walk-python-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['walk-python-editor'] && editors['walk-python-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['walk-python-editor'] && editors['walk-python-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('walk-python-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-walk-python"></div>
@@ -1215,6 +1223,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
             <button class="btn btn-run" onclick="editors['walk-ex1-editor'] && editors['walk-ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['walk-ex1-editor'] && editors['walk-ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['walk-ex1-editor'] && editors['walk-ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('walk-ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-walk-ex1"></div>
@@ -1260,6 +1269,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
             <button class="btn btn-run" onclick="editors['walk-ex2-editor'] && editors['walk-ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['walk-ex2-editor'] && editors['walk-ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['walk-ex2-editor'] && editors['walk-ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('walk-ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-walk-ex2"></div>
@@ -1307,6 +1317,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
             <button class="btn btn-run" onclick="editors['walk-ex3-editor'] && editors['walk-ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['walk-ex3-editor'] && editors['walk-ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['walk-ex3-editor'] && editors['walk-ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('walk-ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-walk-ex3"></div>
@@ -1630,6 +1641,7 @@ asr.unsubscribe("GreetingModule")</code></pre>
           <button class="btn btn-run" onclick="editors['responding-voice-editor'] && editors['responding-voice-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['responding-voice-editor'] && editors['responding-voice-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['responding-voice-editor'] && editors['responding-voice-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('responding-voice-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-responding-voice"></div>
@@ -1671,6 +1683,7 @@ print(word == "goodbye")  # False</code></pre>
             <button class="btn btn-run" onclick="editors['hear-ex1-editor'] && editors['hear-ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['hear-ex1-editor'] && editors['hear-ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['hear-ex1-editor'] && editors['hear-ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hear-ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-hear-ex1"></div>
@@ -1718,6 +1731,7 @@ else:
             <button class="btn btn-run" onclick="editors['hear-ex2-editor'] && editors['hear-ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['hear-ex2-editor'] && editors['hear-ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['hear-ex2-editor'] && editors['hear-ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hear-ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-hear-ex2"></div>
@@ -1774,6 +1788,7 @@ else:
             <button class="btn btn-run" onclick="editors['hear-ex3-editor'] && editors['hear-ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['hear-ex3-editor'] && editors['hear-ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['hear-ex3-editor'] && editors['hear-ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hear-ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-hear-ex3"></div>
@@ -1974,6 +1989,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
           <button class="btn btn-run" onclick="editors['keyframe-motion-editor'] && editors['keyframe-motion-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['keyframe-motion-editor'] && editors['keyframe-motion-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['keyframe-motion-editor'] && editors['keyframe-motion-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('keyframe-motion-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-keyframe-motion"></div>
@@ -2033,6 +2049,7 @@ posture.goToPosture("Sit", 0.5)</code></pre>
           <button class="btn btn-run" onclick="editors['balancing-nao-editor'] && editors['balancing-nao-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['balancing-nao-editor'] && editors['balancing-nao-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['balancing-nao-editor'] && editors['balancing-nao-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('balancing-nao-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-balancing-nao"></div>
@@ -2128,6 +2145,7 @@ motion.angleInterpolation(names, [0.0, 0.0], times, True)</code></pre>
           <button class="btn btn-run" onclick="editors['joint-control-editor'] && editors['joint-control-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['joint-control-editor'] && editors['joint-control-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['joint-control-editor'] && editors['joint-control-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('joint-control-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-joint-control"></div>
@@ -2181,6 +2199,7 @@ motion.angleInterpolation(names, [0.0, 0.0], times, True)</code></pre>
             <button class="btn btn-run" onclick="editors['dance-ex1-editor'] && editors['dance-ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['dance-ex1-editor'] && editors['dance-ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['dance-ex1-editor'] && editors['dance-ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('dance-ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-dance-ex1"></div>
@@ -2240,6 +2259,7 @@ tts.say("Nice to meet you!")</code></pre>
             <button class="btn btn-run" onclick="editors['dance-ex2-editor'] && editors['dance-ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['dance-ex2-editor'] && editors['dance-ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['dance-ex2-editor'] && editors['dance-ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('dance-ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-dance-ex2"></div>
@@ -2302,6 +2322,7 @@ tts.say("That was fun!")</code></pre>
             <button class="btn btn-run" onclick="editors['dance-ex3-editor'] && editors['dance-ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['dance-ex3-editor'] && editors['dance-ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['dance-ex3-editor'] && editors['dance-ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('dance-ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-dance-ex3"></div>
@@ -2495,6 +2516,7 @@ tts.say("Done!")</code></pre>
           <button class="btn btn-run" onclick="editors['senses-nao-editor'] && editors['senses-nao-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['senses-nao-editor'] && editors['senses-nao-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['senses-nao-editor'] && editors['senses-nao-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('senses-nao-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-senses-nao"></div>
@@ -2585,6 +2607,7 @@ leds.fadeRGB("FaceLeds", color, 0.1)</code></pre>
           <button class="btn btn-run" onclick="editors['leds-bumpers-editor'] && editors['leds-bumpers-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['leds-bumpers-editor'] && editors['leds-bumpers-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['leds-bumpers-editor'] && editors['leds-bumpers-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('leds-bumpers-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-leds-bumpers"></div>
@@ -2690,6 +2713,7 @@ for event in events:
           <button class="btn btn-run" onclick="editors['fsm-editor'] && editors['fsm-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['fsm-editor'] && editors['fsm-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['fsm-editor'] && editors['fsm-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('fsm-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-fsm"></div>
@@ -2789,6 +2813,7 @@ motion.setAngles(right_joints, right_angles, 0.5)</code></pre>
           <button class="btn btn-run" onclick="editors['sensors-actuators-editor'] && editors['sensors-actuators-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['sensors-actuators-editor'] && editors['sensors-actuators-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['sensors-actuators-editor'] && editors['sensors-actuators-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('sensors-actuators-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-sensors-actuators"></div>
@@ -2824,6 +2849,7 @@ motion.setAngles(right_joints, right_angles, 0.5)</code></pre>
             <button class="btn btn-run" onclick="editors['sense-ex1-editor'] && editors['sense-ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['sense-ex1-editor'] && editors['sense-ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['sense-ex1-editor'] && editors['sense-ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('sense-ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-sense-ex1"></div>
@@ -2874,6 +2900,7 @@ for mood in events:
             <button class="btn btn-run" onclick="editors['sense-ex2-editor'] && editors['sense-ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['sense-ex2-editor'] && editors['sense-ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['sense-ex2-editor'] && editors['sense-ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('sense-ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-sense-ex2"></div>
@@ -2933,6 +2960,7 @@ motion.angleInterpolation(names, [0.0, 0.0], times, True)</code></pre>
             <button class="btn btn-run" onclick="editors['sense-ex3-editor'] && editors['sense-ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['sense-ex3-editor'] && editors['sense-ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['sense-ex3-editor'] && editors['sense-ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('sense-ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-sense-ex3"></div>
@@ -3290,6 +3318,7 @@ for t in threads:
           <button class="btn btn-run" onclick="editors['parallel-motion-editor'] && editors['parallel-motion-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['parallel-motion-editor'] && editors['parallel-motion-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['parallel-motion-editor'] && editors['parallel-motion-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('parallel-motion-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-parallel-motion"></div>
@@ -3372,6 +3401,7 @@ def simplify_angle(theta):
           <button class="btn btn-run" onclick="editors['odometry-editor'] && editors['odometry-editor'].run()">Run</button>
           <button class="btn btn-reset" onclick="editors['odometry-editor'] && editors['odometry-editor'].resetCode()">Reset</button>
           <button class="btn btn-reset" onclick="editors['odometry-editor'] && editors['odometry-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('odometry-editor', this)">Copy Code</button>
         </div>
         <div class="try-it-preview">
           <div class="try-it-3d-container" id="preview-odometry"></div>
@@ -3416,6 +3446,7 @@ def simplify_angle(theta):
             <button class="btn btn-run" onclick="editors['robot-ex1-editor'] && editors['robot-ex1-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['robot-ex1-editor'] && editors['robot-ex1-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['robot-ex1-editor'] && editors['robot-ex1-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('robot-ex1-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-robot-ex1"></div>
@@ -3487,6 +3518,7 @@ tts.say("Dance complete!")</code></pre>
             <button class="btn btn-run" onclick="editors['robot-ex2-editor'] && editors['robot-ex2-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['robot-ex2-editor'] && editors['robot-ex2-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['robot-ex2-editor'] && editors['robot-ex2-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('robot-ex2-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-robot-ex2"></div>
@@ -3557,6 +3589,7 @@ tts.say("Square complete!")</code></pre>
             <button class="btn btn-run" onclick="editors['robot-ex3-editor'] && editors['robot-ex3-editor'].run()">Run</button>
             <button class="btn btn-reset" onclick="editors['robot-ex3-editor'] && editors['robot-ex3-editor'].resetCode()">Reset</button>
             <button class="btn btn-reset" onclick="editors['robot-ex3-editor'] && editors['robot-ex3-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('robot-ex3-editor', this)">Copy Code</button>
           </div>
           <div class="try-it-preview">
             <div class="try-it-3d-container" id="preview-robot-ex3"></div>

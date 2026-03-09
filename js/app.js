@@ -1115,6 +1115,17 @@ function copyToClipboard(btn) {
   }
 }
 
+/* === Copy editor code to clipboard === */
+function copyEditorCode(editorKey, btn) {
+  const editor = editors[editorKey];
+  if (!editor) return;
+  const code = editor.getCode();
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy Code'; }, 2000);
+  });
+}
+
 /* === Init on page load === */
 document.addEventListener('DOMContentLoaded', () => {
   // Attach sidebar click handlers
