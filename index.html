@@ -3986,7 +3986,7 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
 
 response = requests.post(url, json={
     "contents": [{
@@ -4004,7 +4004,7 @@ print("AI says:", answer)</code></pre>
       <div class="step-number">1</div>
       <div class="step-content">
         <h4>The URL</h4>
-        <p>The API endpoint includes the model name (<code>gemini-2.0-flash</code>) and your API key as a query parameter. Gemini 2.0 Flash is fast and free.</p>
+        <p>The API endpoint includes the model name (<code>gemini-2.5-flash</code>) and your API key as a query parameter. Gemini 2.0 Flash is fast and free.</p>
       </div>
     </div>
 
@@ -4063,7 +4063,7 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 
-url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
 
 history = []
 
@@ -4242,7 +4242,7 @@ memory = ALProxy("ALMemory", robot_ip, 9559)
 leds = ALProxy("ALLeds", robot_ip, 9559)
 
 # Gemini API setup
-url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
 system_prompt = "You are a friendly NAO robot in a university classroom. Keep responses under 2 sentences."
 history = []
 

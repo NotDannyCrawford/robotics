@@ -1319,7 +1319,7 @@ async function callGemini(prompt, systemPrompt, history) {
     throw new Error('No API key found. Save your Gemini key on the "Get Your API Key" page first.');
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
   const body = { contents: [] };
 
