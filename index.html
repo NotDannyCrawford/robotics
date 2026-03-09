@@ -91,25 +91,39 @@
 
   <div class="sidebar-divider"></div>
 
-  <div class="sidebar-module-header">Module 7 — Face Off</div>
+  <div class="sidebar-module-header">Module 7 — AI x NAO</div>
+  <a class="sidebar-item" data-page="ai-intro">What is an LLM API?</a>
+  <a class="sidebar-item" data-page="ai-api-key">Get Your API Key</a>
+  <a class="sidebar-item" data-page="ai-env-file">Protecting Your Key</a>
+  <a class="sidebar-item" data-page="ai-first-call">Your First AI Call</a>
+  <a class="sidebar-item" data-page="ai-chat-loop">Building a Chat Loop</a>
+  <a class="sidebar-item" data-page="ai-personality">Giving It Personality</a>
+  <a class="sidebar-item" data-page="ai-nao-connect">Connecting AI to NAO</a>
+  <div class="sidebar-subheader">Practice</div>
+  <a class="sidebar-item" data-page="ai-exercises">Exercises</a>
+  <a class="sidebar-item" data-page="ai-questions">Module Questions</a>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-module-header">Module 8 — Face Off</div>
   <a class="sidebar-item disabled">Face Detection</a>
   <a class="sidebar-item disabled">Exercises</a>
 
   <div class="sidebar-divider"></div>
 
-  <div class="sidebar-module-header">Module 8 — Object Recognition</div>
+  <div class="sidebar-module-header">Module 9 — Object Recognition</div>
   <a class="sidebar-item disabled">Visual Recognition</a>
   <a class="sidebar-item disabled">Exercises</a>
 
   <div class="sidebar-divider"></div>
 
-  <div class="sidebar-module-header">Module 9 — Human-Robot Interaction</div>
+  <div class="sidebar-module-header">Module 10 — Human-Robot Interaction</div>
   <a class="sidebar-item disabled">Interaction Design</a>
   <a class="sidebar-item disabled">Exercises</a>
 
   <div class="sidebar-divider"></div>
 
-  <div class="sidebar-module-header">Module 10 — Finding Your Way</div>
+  <div class="sidebar-module-header">Module 11 — Finding Your Way</div>
   <a class="sidebar-item disabled">Navigation</a>
   <a class="sidebar-item disabled">Exercises</a>
 </nav>
@@ -3748,6 +3762,795 @@ This works because <code>int(x / y)</code> gives how many whole times y fits int
 
     <div class="page-nav">
       <a href="#robot-exercises" class="page-nav-prev">&larr; Exercises</a>
+      <a href="#ai-intro" class="page-nav-next">What is an LLM API? &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 7: AI x NAO ==================== -->
+
+  <!-- ==================== PAGE: What is an LLM API? ==================== -->
+  <div id="page-ai-intro" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-intro">What is an LLM API?</a></div>
+    <h1>What is an LLM API?</h1>
+
+    <p>Up until now, everything NAO says has been <strong>scripted</strong> — you wrote the exact words it speaks. But what if NAO could <em>think</em> for itself? What if you could ask it a question and it gave you a real, intelligent answer?</p>
+
+    <p>That's what this module is about. We're going to connect NAO to an <strong>AI brain</strong> — specifically, a <strong>Large Language Model (LLM)</strong> — so it can have real conversations.</p>
+
+    <h2>How It Works</h2>
+    <p>An LLM API is surprisingly simple. It's just a URL you send text to, and it sends text back:</p>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>You send a message</h4>
+        <p>Your Python script sends a prompt (like <code>"What is the capital of France?"</code>) to Google's servers over the internet.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>The AI processes it</h4>
+        <p>Google's Gemini model reads your prompt and generates a response. This takes about 1-2 seconds.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>You get a response back</h4>
+        <p>The API sends back the AI's answer as text (like <code>"The capital of France is Paris."</code>). Your script can then do anything with that text — print it, have NAO say it, whatever you want.</p>
+      </div>
+    </div>
+
+    <h2>Why Google Gemini?</h2>
+    <p>There are several AI APIs out there (OpenAI, Anthropic, Mistral), but we're using <strong>Google Gemini</strong> because:</p>
+    <ul>
+      <li><strong>Free</strong> — generous free tier, no credit card required</li>
+      <li><strong>Simple</strong> — just one HTTP request, no complex SDK needed</li>
+      <li><strong>Everyone has a Google account</strong> — you can get an API key in 30 seconds</li>
+    </ul>
+
+    <h2>What We'll Build</h2>
+    <p>By the end of this module, you'll be able to:</p>
+    <ul>
+      <li>Make AI API calls from Python</li>
+      <li>Build a chatbot that remembers the conversation</li>
+      <li>Give the AI a custom personality</li>
+      <li>Connect it all to NAO — so the robot listens, thinks, and speaks using AI</li>
+    </ul>
+
+    <div class="callout callout-info">
+      <div class="callout-title">No Robot Needed (Yet)</div>
+      <p>The first parts of this module are pure Python — no robot required. We'll build up the AI skills first, then connect to NAO at the end.</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="#robot-questions" class="page-nav-prev">&larr; Module Questions</a>
+      <a href="#ai-api-key" class="page-nav-next">Get Your API Key &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Get Your API Key ==================== -->
+  <div id="page-ai-api-key" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-api-key">Get Your API Key</a></div>
+    <h1>Get Your API Key</h1>
+
+    <p>To talk to the Gemini API, you need an <strong>API key</strong> — a unique string that identifies you. Think of it like a password that tells Google "this request is coming from me."</p>
+
+    <h2>Step-by-Step</h2>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>Go to Google AI Studio</h4>
+        <p>Open <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> and sign in with your Google account.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>Create an API key</h4>
+        <p>Click <strong>"Create API Key"</strong>. Google will generate a long string that looks something like: <code>AIzaSyB...xQ4</code></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>Copy and save it</h4>
+        <p>Copy the key somewhere safe. You'll need it in the next steps. <strong>Don't share it publicly</strong> — anyone with your key can make requests as you.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">Keep Your Key Secret</div>
+      <p>Never paste your API key directly into code that gets shared or uploaded to GitHub. We'll learn how to protect it properly in the next section.</p>
+    </div>
+
+    <h2>Install the Requests Library</h2>
+    <p>We'll use Python's <code>requests</code> library to make HTTP calls to the API. Install it if you don't have it:</p>
+
+    <div class="terminal-block">
+      <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+      <pre><code>pip install requests</code></pre>
+    </div>
+
+    <h2>Set Up Your Key on This Website</h2>
+    <p>The interactive editors on this site can make <strong>real API calls</strong> to Gemini — but they need your key. Enter it below and it will be saved in your browser (it never leaves your device).</p>
+
+    <div class="api-key-setup" id="api-key-setup-page">
+      <div class="api-key-input-group">
+        <input type="password" id="gemini-key-input-page" class="api-key-input" placeholder="Paste your Gemini API key here...">
+        <button class="btn btn-run" onclick="saveGeminiKey('gemini-key-input-page')">Save Key</button>
+        <button class="btn btn-reset" onclick="clearGeminiKey('gemini-key-input-page')">Clear</button>
+      </div>
+      <div class="api-key-status" id="api-key-status-page"></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-intro" class="page-nav-prev">&larr; What is an LLM API?</a>
+      <a href="#ai-env-file" class="page-nav-next">Protecting Your Key &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Protecting Your Key ==================== -->
+  <div id="page-ai-env-file" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-env-file">Protecting Your Key</a></div>
+    <h1>Protecting Your Key — The .env File</h1>
+
+    <p>Here's a common mistake beginners make:</p>
+
+    <pre class="code-block"><code># DON'T DO THIS!
+api_key = "AIzaSyB...your-actual-key-here"</code></pre>
+
+    <p>If you push this code to GitHub, your key is now public. Anyone can find it and use your API quota. This is a real problem — bots actively scan GitHub for leaked API keys.</p>
+
+    <h2>The Solution: Environment Variables</h2>
+    <p>Instead of putting the key in your code, you store it in a separate file called <code>.env</code> that <strong>never gets committed to Git</strong>.</p>
+
+    <h2>Step 1: Create a .env File</h2>
+    <p>In your project folder, create a file called <code>.env</code> (just the extension, no filename):</p>
+
+    <div class="terminal-block">
+      <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+      <pre><code>GEMINI_API_KEY=AIzaSyB...your-actual-key-here</code></pre>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">No Quotes, No Spaces</div>
+      <p>In <code>.env</code> files, don't put quotes around the value and don't add spaces around the <code>=</code> sign.</p>
+    </div>
+
+    <h2>Step 2: Add .env to .gitignore</h2>
+    <p>Create or edit your <code>.gitignore</code> file to make sure Git never tracks the <code>.env</code> file:</p>
+
+    <div class="terminal-block">
+      <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+      <pre><code>.env</code></pre>
+    </div>
+
+    <h2>Step 3: Install python-dotenv</h2>
+
+    <div class="terminal-block">
+      <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+      <pre><code>pip install python-dotenv</code></pre>
+    </div>
+
+    <h2>Step 4: Load the Key in Python</h2>
+
+    <pre class="code-block"><code>import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Reads the .env file
+
+api_key = os.getenv("GEMINI_API_KEY")
+print("Key loaded:", api_key[:10] + "...")</code></pre>
+
+    <p>This pattern is used everywhere in professional software development — not just for AI APIs, but for database passwords, secret tokens, and any sensitive configuration.</p>
+
+    <h2>How Your Project Should Look</h2>
+
+    <pre class="code-block"><code>my-project/
+  .env              &lt;-- Your secret key (NOT in Git)
+  .gitignore        &lt;-- Contains ".env"
+  chat.py           &lt;-- Your Python script
+  requirements.txt  &lt;-- requests, python-dotenv</code></pre>
+
+    <div class="callout callout-info">
+      <div class="callout-title">On This Website</div>
+      <p>The interactive editors below use the API key you saved on the previous page (stored in your browser's localStorage). In real scripts on your computer, always use <code>.env</code> files instead.</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-api-key" class="page-nav-prev">&larr; Get Your API Key</a>
+      <a href="#ai-first-call" class="page-nav-next">Your First AI Call &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Your First AI Call ==================== -->
+  <div id="page-ai-first-call" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-first-call">Your First AI Call</a></div>
+    <h1>Your First AI Call</h1>
+
+    <p>Let's make your first real call to the Gemini API. The whole thing is just one HTTP POST request.</p>
+
+    <h2>The Code</h2>
+
+    <pre class="code-block"><code>import os
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+
+response = requests.post(url, json={
+    "contents": [{
+        "parts": [{"text": "What is robotics in one sentence?"}]
+    }]
+})
+
+data = response.json()
+answer = data["candidates"][0]["content"]["parts"][0]["text"]
+print("AI says:", answer)</code></pre>
+
+    <h2>Breaking It Down</h2>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>The URL</h4>
+        <p>The API endpoint includes the model name (<code>gemini-2.0-flash</code>) and your API key as a query parameter. Gemini 2.0 Flash is fast and free.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>The Request Body</h4>
+        <p>You send a JSON object with <code>contents</code> — an array of messages. Each message has <code>parts</code> containing the text. This structure lets you send conversation history later.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>The Response</h4>
+        <p>The API returns JSON with <code>candidates</code> — possible responses. We grab the first candidate's text content. That's the AI's answer.</p>
+      </div>
+    </div>
+
+    <h2>Try It Yourself</h2>
+    <p>Edit the prompt below and click Run to see a real AI response. Make sure you've entered your Gemini API key on the <a href="#ai-api-key" onclick="navigateTo('ai-api-key')">API Key page</a> first.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Your First AI Call — Live Editor</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-ai-first-call"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="runGeminiEditor('ai-first-call-editor')">Run</button>
+          <button class="btn btn-reset" onclick="editors['ai-first-call-editor'] && editors['ai-first-call-editor'].resetCode()">Reset</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ai-first-call-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-output" id="output-ai-first-call" style="min-height:80px;"></div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-env-file" class="page-nav-prev">&larr; Protecting Your Key</a>
+      <a href="#ai-chat-loop" class="page-nav-next">Building a Chat Loop &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Building a Chat Loop ==================== -->
+  <div id="page-ai-chat-loop" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-chat-loop">Building a Chat Loop</a></div>
+    <h1>Building a Chat Loop</h1>
+
+    <p>A single question is useful, but a <strong>conversation</strong> is where things get interesting. The trick is <strong>conversation history</strong> — you send the entire conversation so far with every request.</p>
+
+    <h2>How Conversation History Works</h2>
+    <p>The Gemini API is <strong>stateless</strong> — it doesn't remember previous calls. To have a multi-turn conversation, you keep a list of messages and send all of them each time:</p>
+
+    <pre class="code-block"><code>import os
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+
+history = []
+
+while True:
+    user_input = input("You: ")
+    if user_input.lower() in ["quit", "exit", "bye"]:
+        print("Goodbye!")
+        break
+
+    # Add user message to history
+    history.append({
+        "role": "user",
+        "parts": [{"text": user_input}]
+    })
+
+    # Send full history to API
+    response = requests.post(url, json={"contents": history})
+    data = response.json()
+    answer = data["candidates"][0]["content"]["parts"][0]["text"]
+
+    # Add AI response to history
+    history.append({
+        "role": "model",
+        "parts": [{"text": answer}]
+    })
+
+    print("AI:", answer)</code></pre>
+
+    <h2>Why Send the Whole History?</h2>
+    <p>Each API call is independent — the AI has no memory between calls. By sending the full conversation, the AI can reference what was said before. For example:</p>
+
+    <pre class="code-block"><code>You: My name is Danny.
+AI: Nice to meet you, Danny!
+You: What's my name?
+AI: Your name is Danny!</code></pre>
+
+    <p>If you only sent "What's my name?" without the history, the AI would have no idea.</p>
+
+    <h2>Try It</h2>
+    <p>The editor below simulates a multi-turn conversation. Each message in the <code>messages</code> list will be sent to the AI one at a time, building up the conversation.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Chat Loop — Live Editor</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-ai-chat-loop"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="runGeminiEditor('ai-chat-loop-editor')">Run</button>
+          <button class="btn btn-reset" onclick="editors['ai-chat-loop-editor'] && editors['ai-chat-loop-editor'].resetCode()">Reset</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ai-chat-loop-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-output" id="output-ai-chat-loop" style="min-height:80px;"></div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-first-call" class="page-nav-prev">&larr; Your First AI Call</a>
+      <a href="#ai-personality" class="page-nav-next">Giving It Personality &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Giving It Personality ==================== -->
+  <div id="page-ai-personality" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-personality">Giving It Personality</a></div>
+    <h1>Giving It Personality</h1>
+
+    <p>By default, the AI responds like a helpful assistant. But you can change its entire personality with a <strong>system prompt</strong> — a special instruction at the beginning of the conversation that tells the AI who it is and how to behave.</p>
+
+    <h2>System Prompts</h2>
+    <p>A system prompt is just the first message in the conversation. With Gemini, you put it in the <code>system_instruction</code> field:</p>
+
+    <pre class="code-block"><code>response = requests.post(url, json={
+    "system_instruction": {
+        "parts": [{"text": "You are a pirate named Captain NAO. You speak in pirate slang and always mention the sea. Keep responses under 2 sentences."}]
+    },
+    "contents": [{
+        "role": "user",
+        "parts": [{"text": "What's the weather like?"}]
+    }]
+})</code></pre>
+
+    <p>The AI will now respond in character:</p>
+    <pre class="code-block"><code>Arrr, the skies be clear and the winds be favorable for sailin' today!
+A fine day to be out on the open sea, matey!</code></pre>
+
+    <h2>Tips for Good System Prompts</h2>
+    <ul>
+      <li><strong>Be specific</strong> — "You are a sarcastic robot" is better than "Be funny"</li>
+      <li><strong>Set boundaries</strong> — "Keep responses under 2 sentences" prevents long-winded answers</li>
+      <li><strong>Give context</strong> — "You are a NAO robot in a university classroom" helps the AI stay relevant</li>
+      <li><strong>Define the tone</strong> — "Speak casually like a friend" vs "Speak formally like a professor"</li>
+    </ul>
+
+    <h2>Try It</h2>
+    <p>Edit the system prompt below to create your own personality, then ask it questions to see how it responds.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Custom Personality — Live Editor</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-ai-personality"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="runGeminiEditor('ai-personality-editor')">Run</button>
+          <button class="btn btn-reset" onclick="editors['ai-personality-editor'] && editors['ai-personality-editor'].resetCode()">Reset</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ai-personality-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-output" id="output-ai-personality" style="min-height:80px;"></div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-chat-loop" class="page-nav-prev">&larr; Building a Chat Loop</a>
+      <a href="#ai-nao-connect" class="page-nav-next">Connecting AI to NAO &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Connecting AI to NAO ==================== -->
+  <div id="page-ai-nao-connect" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-nao-connect">Connecting AI to NAO</a></div>
+    <h1>Connecting AI to NAO</h1>
+
+    <p>Now we put it all together. The pipeline is:</p>
+
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>NAO Listens (LEDs: Green)</h4>
+        <p>NAO uses speech recognition to hear what you say. Green LEDs mean "I'm listening."</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>NAO Thinks (LEDs: Yellow)</h4>
+        <p>The recognized text is sent to the Gemini API. Yellow LEDs mean "I'm thinking — waiting for the AI to respond."</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>NAO Speaks (LEDs: Blue)</h4>
+        <p>The AI's response is sent to text-to-speech. Blue LEDs mean "I'm talking."</p>
+      </div>
+    </div>
+
+    <h2>LED Status Colors</h2>
+    <p>Using LEDs as status indicators makes it easy to debug — you can tell at a glance what state NAO is in:</p>
+
+    <table>
+      <thead><tr><th>Color</th><th>Hex Code</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#34a853;">Green</td><td><code>0x00FF00</code></td><td>Listening for speech</td></tr>
+        <tr><td style="color:#f9ab00;">Yellow</td><td><code>0xFFFF00</code></td><td>Thinking (API call in progress)</td></tr>
+        <tr><td style="color:#1a73e8;">Blue</td><td><code>0x0000FF</code></td><td>Speaking the response</td></tr>
+        <tr><td style="color:#ea4335;">Red</td><td><code>0xFF0000</code></td><td>Error occurred</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The Full Script</h2>
+    <p>Here's the complete pipeline for running on the real robot. This requires the NAOqi SDK, a Gemini API key in your <code>.env</code> file, and a real NAO robot on your network.</p>
+
+    <pre class="code-block"><code>import os
+import time
+import requests
+from dotenv import load_dotenv
+from naoqi import ALProxy
+
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+robot_ip = "&lt;robot_ip&gt;"
+
+# Connect to NAO
+tts = ALProxy("ALTextToSpeech", robot_ip, 9559)
+asr = ALProxy("ALSpeechRecognition", robot_ip, 9559)
+memory = ALProxy("ALMemory", robot_ip, 9559)
+leds = ALProxy("ALLeds", robot_ip, 9559)
+
+# Gemini API setup
+url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+system_prompt = "You are a friendly NAO robot in a university classroom. Keep responses under 2 sentences."
+history = []
+
+def ask_gemini(user_text):
+    """Send text to Gemini and return the response."""
+    history.append({"role": "user", "parts": [{"text": user_text}]})
+
+    response = requests.post(url, json={
+        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "contents": history
+    })
+
+    data = response.json()
+    answer = data["candidates"][0]["content"]["parts"][0]["text"]
+    history.append({"role": "model", "parts": [{"text": answer}]})
+    return answer
+
+# Main conversation loop
+asr.setLanguage("English")
+tts.say("Hello! I'm ready to chat. Talk to me!")
+
+for turn in range(5):  # 5 conversation turns
+    # LISTENING — Green LEDs
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    asr.subscribe("AIChat")
+    time.sleep(4)  # Listen for 4 seconds
+    asr.unsubscribe("AIChat")
+
+    # Get what was heard
+    speech_data = memory.getData("ALSpeechRecognition/LastWordRecognized")
+    if not speech_data or len(speech_data) == 0:
+        tts.say("I didn't catch that. Try again!")
+        continue
+    heard = speech_data[0]
+    print("Heard:", heard)
+
+    # THINKING — Yellow LEDs
+    leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+    answer = ask_gemini(heard)
+    print("AI:", answer)
+
+    # SPEAKING — Blue LEDs
+    leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+    tts.say(answer)
+
+# Done — turn off LEDs
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)
+tts.say("Great chat! Goodbye!")</code></pre>
+
+    <div class="callout callout-info">
+      <div class="callout-title">Running This Script</div>
+      <p>This script runs on your <strong>computer</strong> (not in the browser). You need: Python 2.7+, the NAOqi SDK, <code>requests</code> and <code>python-dotenv</code> installed, a <code>.env</code> file with your Gemini key, and NAO on the same network.</p>
+    </div>
+
+    <h2>Try the Simulator Version</h2>
+    <p>The editor below simulates the full pipeline in the browser — you can see the LED color changes, the AI thinking, and NAO speaking.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>AI x NAO — Simulator</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-ai-nao-connect"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="runGeminiEditor('ai-nao-connect-editor')">Run</button>
+          <button class="btn btn-reset" onclick="editors['ai-nao-connect-editor'] && editors['ai-nao-connect-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['ai-nao-connect-editor'] && editors['ai-nao-connect-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('ai-nao-connect-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-ai-nao-connect"></div>
+          <div class="try-it-output" id="output-ai-nao-connect"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-personality" class="page-nav-prev">&larr; Giving It Personality</a>
+      <a href="#ai-exercises" class="page-nav-next">Exercises &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: AI Exercises ==================== -->
+  <div id="page-ai-exercises" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-exercises">Exercises</a></div>
+    <h1>Exercises</h1>
+    <p>Put your AI skills to the test. These exercises use real Gemini API calls — make sure your API key is saved.</p>
+
+    <!-- Exercise 1 -->
+    <div class="exercise-card">
+      <h3>Exercise 1: Trivia Bot</h3>
+      <div class="exercise-prompt">
+        Create an AI-powered trivia bot. Define a list of 3 trivia topics (e.g., "space", "animals", "history"). For each topic, ask the AI to generate a trivia question, then print the question and answer.
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 1 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-ai-ex1"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="runGeminiEditor('ai-ex1-editor')">Run</button>
+            <button class="btn btn-reset" onclick="editors['ai-ex1-editor'] && editors['ai-ex1-editor'].resetCode()">Reset</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('ai-ex1-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-output" id="output-ai-ex1" style="min-height:80px;"></div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>Loop through your topics list. For each topic, send a prompt like <code>f"Give me one trivia question about {topic} with the answer."</code> and print the result.</p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code># Topics to quiz on
+topics = ["space", "animals", "history"]
+
+for topic in topics:
+    prompt = f"Give me one trivia question about {topic}. Include the answer on the next line."
+    # API_CALL: prompt
+    print(f"--- {topic.upper()} ---")</code></pre>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise-card">
+      <h3>Exercise 2: Language Translator</h3>
+      <div class="exercise-prompt">
+        Use the AI to build a translator. Define a sentence and a list of 3 target languages. Ask the AI to translate the sentence into each language and print the results.
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 2 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-ai-ex2"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="runGeminiEditor('ai-ex2-editor')">Run</button>
+            <button class="btn btn-reset" onclick="editors['ai-ex2-editor'] && editors['ai-ex2-editor'].resetCode()">Reset</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('ai-ex2-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-output" id="output-ai-ex2" style="min-height:80px;"></div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>Use a prompt like <code>f"Translate '{sentence}' to {language}. Only output the translation, nothing else."</code></p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code>sentence = "Hello, I am a robot and I love learning!"
+languages = ["Spanish", "Japanese", "French"]
+
+for lang in languages:
+    prompt = f"Translate this to {lang}. Only output the translation: {sentence}"
+    # API_CALL: prompt
+    print(f"{lang}: (AI response here)")</code></pre>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise-card">
+      <h3>Exercise 3: AI Storyteller with NAO</h3>
+      <div class="exercise-prompt">
+        Combine AI with NAO's text-to-speech. Ask the AI to tell a short 3-sentence story about a robot, then have NAO speak each sentence with LED color changes between sentences (different color for each sentence).
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 3 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-ai-ex3"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="runGeminiEditor('ai-ex3-editor')">Run</button>
+            <button class="btn btn-reset" onclick="editors['ai-ex3-editor'] && editors['ai-ex3-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['ai-ex3-editor'] && editors['ai-ex3-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('ai-ex3-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-ai-ex3"></div>
+            <div class="try-it-output" id="output-ai-ex3"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>Ask the AI: <code>"Tell a 3-sentence story about a robot. Put each sentence on its own line."</code> Then split the response by newlines and loop through each sentence, changing LED colors before each <code>tts.say()</code>.</p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code>from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+
+# Ask AI for a story (the comment triggers the API call)
+# API_CALL: Tell a 3-sentence story about a friendly robot. One sentence per line.
+
+# Simulated response:
+story = "Once upon a time, a little robot woke up in a lab.\nIt looked around and decided to explore the world.\nAnd from that day on, it made friends everywhere it went."
+
+colors = [0xFF0000, 0x00FF00, 0x0000FF]
+sentences = story.strip().split("\\n")
+
+for i, sentence in enumerate(sentences):
+    leds.fadeRGB("FaceLeds", colors[i % len(colors)], 0.3)
+    tts.say(sentence)
+
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-nao-connect" class="page-nav-prev">&larr; Connecting AI to NAO</a>
+      <a href="#ai-questions" class="page-nav-next">Module Questions &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: AI Module Questions ==================== -->
+  <div id="page-ai-questions" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 7 — AI x NAO &gt; <a href="#ai-questions">Module Questions</a></div>
+    <h1>Module Questions</h1>
+    <p>Test your understanding of Module 7 by answering the questions below. Click "Reveal Answer" to check your work.</p>
+
+    <h2>Basic</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">1.</span>
+      <span class="q-text">What does LLM stand for?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">Large Language Model — a type of AI trained on massive amounts of text data that can generate human-like text responses.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">2.</span>
+      <span class="q-text">Why should you never put an API key directly in your source code?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">If the code is shared or pushed to a public repository like GitHub, anyone can see and use your API key. Bots actively scan repositories for leaked keys. Instead, store keys in a <code>.env</code> file that is excluded from version control via <code>.gitignore</code>.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">3.</span>
+      <span class="q-text">What Python library do we use to load variables from a <code>.env</code> file?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><code>python-dotenv</code> — specifically, you call <code>load_dotenv()</code> and then <code>os.getenv("KEY_NAME")</code> to read values.</div>
+    </div>
+
+    <h2>Intermediate</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">4.</span>
+      <span class="q-text">Why do we need to send the full conversation history with every API call?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">The Gemini API is <strong>stateless</strong> — it has no memory between requests. Each call is independent. To maintain context across multiple turns, we include all previous messages in the <code>contents</code> array so the AI can reference what was said earlier.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">5.</span>
+      <span class="q-text">What is a system prompt and how does it affect AI responses?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">A system prompt is a special instruction given to the AI that defines its personality, behavior, and constraints. It's sent in the <code>system_instruction</code> field and persists across the conversation. For example, telling the AI "You are a pirate" will make all its responses use pirate language.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">6.</span>
+      <span class="q-text">In the NAO + AI pipeline, what do the LED colors green, yellow, and blue indicate?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><strong>Green</strong> = NAO is listening (speech recognition active). <strong>Yellow</strong> = NAO is thinking (waiting for the AI API response). <strong>Blue</strong> = NAO is speaking (text-to-speech playing the response). This makes debugging easy since you can visually see what state the robot is in.</div>
+    </div>
+
+    <h2>Advanced</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">7.</span>
+      <span class="q-text">What are the trade-offs of keeping a longer conversation history vs. a shorter one?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><strong>Longer history:</strong> The AI has more context and can reference earlier parts of the conversation, but each API call sends more data (slower, higher token usage, more expensive at scale). <strong>Shorter history:</strong> Faster and cheaper, but the AI may forget important context. A common strategy is to keep only the last N messages or summarize older messages.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">8.</span>
+      <span class="q-text">Why might the AI give different answers to the same question each time?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">LLMs use a parameter called <strong>temperature</strong> that controls randomness. At temperature 0, responses are deterministic (same every time). At higher temperatures, the model samples from a probability distribution, introducing variety. The default temperature is typically around 1.0, which allows creative but coherent responses.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">9.</span>
+      <span class="q-text">How would you modify the NAO + AI script to handle API errors gracefully (e.g., network timeout, invalid key)?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">Wrap the API call in a <code>try/except</code> block. Check <code>response.status_code</code> — 200 means success, 401 means invalid key, 429 means rate limited. On error, set LEDs to red, have NAO say "Sorry, I had a problem thinking" and either retry or skip to the next turn. Example:
+        <pre><code>try:
+    response = requests.post(url, json=body, timeout=10)
+    response.raise_for_status()
+except requests.exceptions.RequestException as e:
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+    tts.say("Sorry, I had trouble thinking.")
+    continue</code></pre>
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">10.</span>
+      <span class="q-text">Describe how you would implement a "memory limit" that keeps only the last 10 messages in the conversation history while still giving the AI context about earlier messages.</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">Use a <strong>sliding window with summary</strong>. When the history exceeds 10 messages, take the oldest messages (beyond the window), send them to the AI with the prompt "Summarize this conversation so far in 2 sentences," then replace those old messages with a single summary message. The history becomes: [summary] + [last 10 messages]. This preserves key context while keeping the payload small.</div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-exercises" class="page-nav-prev">&larr; Exercises</a>
       <a href="#" class="page-nav-next nav-disabled">Next Module (Coming Soon) &rarr;</a>
     </div>
   </div>

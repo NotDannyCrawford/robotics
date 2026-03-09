@@ -35,6 +35,15 @@ const PAGES = [
   'odometry',
   'robot-exercises',
   'robot-questions',
+  'ai-intro',
+  'ai-api-key',
+  'ai-env-file',
+  'ai-first-call',
+  'ai-chat-loop',
+  'ai-personality',
+  'ai-nao-connect',
+  'ai-exercises',
+  'ai-questions',
 ];
 
 const PAGE_TITLES = {
@@ -72,6 +81,15 @@ const PAGE_TITLES = {
   'odometry': 'Odometry & Walking in Circles',
   'robot-exercises': 'Exercises',
   'robot-questions': 'Module Questions',
+  'ai-intro': 'What is an LLM API?',
+  'ai-api-key': 'Get Your API Key',
+  'ai-env-file': 'Protecting Your Key',
+  'ai-first-call': 'Your First AI Call',
+  'ai-chat-loop': 'Building a Chat Loop',
+  'ai-personality': 'Giving It Personality',
+  'ai-nao-connect': 'Connecting AI to NAO',
+  'ai-exercises': 'Exercises',
+  'ai-questions': 'Module Questions',
 };
 
 /* Track which pages have been initialized so we don't re-init on revisit */
@@ -1068,6 +1086,149 @@ posture.goToPosture("Stand", 0.5)
 tts.say("Circle dance starting!")`,
     });
   }
+
+  // ── Module 7: AI x NAO ──
+
+  if (pageId === 'ai-api-key') {
+    // Check and show existing key status
+    setTimeout(() => updateKeyStatus('api-key-status-page'), 100);
+  }
+
+  if (pageId === 'ai-first-call') {
+    initEditor('ai-first-call-editor', {
+      editorId: 'editor-ai-first-call',
+      outputId: 'output-ai-first-call',
+      defaultCode:
+`# Change the prompt to ask the AI anything!
+prompt = "What is robotics in one sentence?"
+
+# API_CALL: prompt`,
+    });
+  }
+
+  if (pageId === 'ai-chat-loop') {
+    initEditor('ai-chat-loop-editor', {
+      editorId: 'editor-ai-chat-loop',
+      outputId: 'output-ai-chat-loop',
+      defaultCode:
+`# Multi-turn conversation — edit the messages!
+messages = [
+    "My name is Danny.",
+    "I'm studying robotics at Monmouth University.",
+    "What's my name and what am I studying?",
+]
+
+# API_CHAT: messages`,
+    });
+  }
+
+  if (pageId === 'ai-personality') {
+    initEditor('ai-personality-editor', {
+      editorId: 'editor-ai-personality',
+      outputId: 'output-ai-personality',
+      defaultCode:
+`# Change the personality and questions!
+system_prompt = "You are a sarcastic robot named NAO. You answer questions with witty, slightly sarcastic humor. Keep responses under 2 sentences."
+
+messages = [
+    "What's the meaning of life?",
+    "Can you help me with my homework?",
+]
+
+# API_PERSONALITY: system_prompt, messages`,
+    });
+  }
+
+  if (pageId === 'ai-nao-connect') {
+    initEditor('ai-nao-connect-editor', {
+      editorId: 'editor-ai-nao-connect',
+      previewContainerId: 'preview-ai-nao-connect',
+      outputId: 'output-ai-nao-connect',
+      defaultCode:
+`from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+system_prompt = "You are a friendly NAO robot. Keep responses under 2 sentences."
+
+# Simulate a conversation with AI + NAO
+questions = [
+    "What can you tell me about robots?",
+    "What is your favorite thing to do?",
+]
+
+for question in questions:
+    # LISTENING — Green LEDs
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    print("Listening: " + question)
+
+    # THINKING — Yellow LEDs
+    leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+    # API_NAO: system_prompt, question
+
+    # SPEAKING — Blue LEDs
+    leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+    tts.say(ai_response)
+
+# Done
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)
+tts.say("Great chat! Goodbye!")`,
+    });
+  }
+
+  if (pageId === 'ai-exercises') {
+    initEditor('ai-ex1-editor', {
+      editorId: 'editor-ai-ex1',
+      outputId: 'output-ai-ex1',
+      defaultCode:
+`# Exercise 1: Trivia Bot
+# Ask the AI to generate trivia questions on different topics
+
+topics = ["space", "animals", "history"]
+
+for topic in topics:
+    prompt = f"Give me one trivia question about {topic} with the answer on the next line."
+    # API_CALL: prompt`,
+    });
+
+    initEditor('ai-ex2-editor', {
+      editorId: 'editor-ai-ex2',
+      outputId: 'output-ai-ex2',
+      defaultCode:
+`# Exercise 2: Language Translator
+# Translate a sentence into multiple languages
+
+sentence = "Hello, I am a robot and I love learning!"
+languages = ["Spanish", "Japanese", "French"]
+
+for lang in languages:
+    prompt = f"Translate this to {lang}. Only output the translation: {sentence}"
+    # API_CALL: prompt`,
+    });
+
+    initEditor('ai-ex3-editor', {
+      editorId: 'editor-ai-ex3',
+      previewContainerId: 'preview-ai-ex3',
+      outputId: 'output-ai-ex3',
+      defaultCode:
+`# Exercise 3: AI Storyteller with NAO
+from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# Ask AI for a story
+story_prompt = "Tell a 3-sentence story about a friendly robot. One sentence per line. No extra text."
+# API_STORY: story_prompt
+
+# TODO: Split the story into sentences
+# Loop through each sentence:
+#   - Change LED color (use a different color per sentence)
+#   - Have NAO say the sentence
+# Turn off LEDs when done`,
+    });
+  }
 }
 
 /* === Hint toggles — also reveals the answer button === */
@@ -1112,6 +1273,320 @@ function copyToClipboard(btn) {
       btn.textContent = 'Copied!';
       setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
     });
+  }
+}
+
+/* === Gemini API Key Management === */
+function saveGeminiKey(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const key = input.value.trim();
+  if (!key) return;
+  localStorage.setItem('gemini_api_key', key);
+  input.value = '';
+  // Update all status elements on page
+  document.querySelectorAll('.api-key-status').forEach(el => {
+    el.textContent = 'API key saved!';
+    el.style.color = 'var(--success)';
+  });
+}
+
+function clearGeminiKey(inputId) {
+  localStorage.removeItem('gemini_api_key');
+  document.querySelectorAll('.api-key-status').forEach(el => {
+    el.textContent = 'API key cleared.';
+    el.style.color = 'var(--danger)';
+  });
+}
+
+function updateKeyStatus(statusId) {
+  const el = document.getElementById(statusId);
+  if (!el) return;
+  const key = localStorage.getItem('gemini_api_key');
+  if (key) {
+    el.textContent = 'API key is saved (' + key.slice(0, 8) + '...)';
+    el.style.color = 'var(--success)';
+  } else {
+    el.textContent = 'No API key saved yet.';
+    el.style.color = 'var(--text-light)';
+  }
+}
+
+/* === Gemini API Call from Browser === */
+async function callGemini(prompt, systemPrompt, history) {
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) {
+    throw new Error('No API key found. Save your Gemini key on the "Get Your API Key" page first.');
+  }
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  const body = { contents: [] };
+
+  if (systemPrompt) {
+    body.system_instruction = { parts: [{ text: systemPrompt }] };
+  }
+
+  if (history && history.length > 0) {
+    body.contents = history;
+  } else {
+    body.contents = [{ role: 'user', parts: [{ text: prompt }] }];
+  }
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    if (resp.status === 400) throw new Error('Invalid API key. Check your key and try again.');
+    if (resp.status === 429) throw new Error('Rate limit reached. Wait a moment and try again.');
+    throw new Error('API error: ' + (err.error?.message || resp.statusText));
+  }
+
+  const data = await resp.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+/* === Run Gemini-enabled Editor === */
+async function runGeminiEditor(editorKey) {
+  const editor = editors[editorKey];
+  if (!editor) return;
+
+  const code = editor.getCode();
+  const outputId = editor.outputId;
+  const output = document.getElementById(outputId);
+  if (output) output.textContent = '';
+
+  function log(msg) {
+    if (output) {
+      output.textContent += msg + '\n';
+      output.scrollTop = output.scrollHeight;
+    }
+  }
+
+  // Check for API key
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) {
+    log('Error: No API key found. Go to "Get Your API Key" page and save your Gemini key first.');
+    return;
+  }
+
+  try {
+    // Parse the special comment directives in the code
+    if (code.includes('# API_CALL:')) {
+      // Single prompt mode — find all API_CALL comments and execute inline prompts
+      // First, extract all variable assignments before API_CALL
+      const lines = code.split('\n');
+      const scope = {};
+
+      for (const line of lines) {
+        // Simple variable assignment parsing
+        const assignMatch = line.match(/^(\w+)\s*=\s*(.+)$/);
+        if (assignMatch) {
+          try {
+            // Handle f-strings by replacing {var} with scope values
+            let val = assignMatch[2].trim();
+            if (val.startsWith('f"') || val.startsWith("f'")) {
+              val = val.slice(1); // remove f prefix
+            }
+            // Try to eval as JSON-compatible string
+            if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+              scope[assignMatch[1]] = val.slice(1, -1);
+            } else if (val.startsWith('[')) {
+              scope[assignMatch[1]] = JSON.parse(val.replace(/'/g, '"'));
+            }
+          } catch(e) {}
+        }
+      }
+
+      // Find for loops with API_CALL inside
+      const forMatch = code.match(/for\s+(\w+)\s+in\s+(\w+):\s*\n([\s\S]*?)(?=\n\S|\n*$)/);
+      if (forMatch) {
+        const loopVar = forMatch[1];
+        const listName = forMatch[2];
+        const loopBody = forMatch[3];
+        const items = scope[listName] || [];
+
+        for (const item of items) {
+          // Find the prompt line with f-string variable substitution
+          const promptMatch = loopBody.match(/(\w+)\s*=\s*f?["'](.+?)["']/);
+          if (promptMatch) {
+            let prompt = promptMatch[2].replace(new RegExp(`\\{${loopVar}\\}`, 'g'), item);
+            log('> ' + prompt);
+            const answer = await callGemini(prompt);
+            log('AI: ' + answer + '\n');
+          } else {
+            // Check for API_CALL with variable reference
+            const callMatch = loopBody.match(/# API_CALL:\s*(\w+)/);
+            if (callMatch) {
+              let prompt = scope[callMatch[1]] || callMatch[1];
+              prompt = prompt.replace(new RegExp(`\\{${loopVar}\\}`, 'g'), item);
+              log('> ' + prompt);
+              const answer = await callGemini(prompt);
+              log('AI: ' + answer + '\n');
+            }
+          }
+        }
+      } else {
+        // Single API_CALL — extract the prompt variable
+        const callMatch = code.match(/# API_CALL:\s*(\w+)/);
+        if (callMatch) {
+          const prompt = scope[callMatch[1]] || callMatch[1];
+          log('> ' + prompt);
+          const answer = await callGemini(prompt);
+          log('AI: ' + answer);
+        }
+      }
+
+    } else if (code.includes('# API_CHAT:')) {
+      // Multi-turn chat mode
+      const msgMatch = code.match(/messages\s*=\s*\[([\s\S]*?)\]/);
+      if (msgMatch) {
+        const messages = [];
+        const msgItems = msgMatch[1].match(/"([^"]+)"|'([^']+)'/g);
+        if (msgItems) {
+          const history = [];
+          for (const raw of msgItems) {
+            const text = raw.slice(1, -1);
+            log('You: ' + text);
+            history.push({ role: 'user', parts: [{ text }] });
+            const answer = await callGemini(null, null, [...history]);
+            log('AI: ' + answer + '\n');
+            history.push({ role: 'model', parts: [{ text: answer }] });
+          }
+        }
+      }
+
+    } else if (code.includes('# API_PERSONALITY:')) {
+      // Personality mode — system prompt + messages
+      const sysMatch = code.match(/system_prompt\s*=\s*["']([\s\S]*?)["']/);
+      const msgMatch = code.match(/messages\s*=\s*\[([\s\S]*?)\]/);
+      const systemPrompt = sysMatch ? sysMatch[1] : '';
+
+      if (msgMatch) {
+        const msgItems = msgMatch[1].match(/"([^"]+)"|'([^']+)'/g);
+        if (msgItems) {
+          log('System: ' + systemPrompt + '\n');
+          const history = [];
+          for (const raw of msgItems) {
+            const text = raw.slice(1, -1);
+            log('You: ' + text);
+            history.push({ role: 'user', parts: [{ text }] });
+            const answer = await callGemini(null, systemPrompt, [...history]);
+            log('AI: ' + answer + '\n');
+            history.push({ role: 'model', parts: [{ text: answer }] });
+          }
+        }
+      }
+
+    } else if (code.includes('# API_NAO:') || code.includes('# API_STORY:')) {
+      // NAO + AI mode — run through Pyodide with real AI responses injected
+      log('Loading Python interpreter...');
+
+      const pyodide = await ensurePyodide();
+      pyodide.runPython('_reset_actions()');
+
+      // Extract system prompt and questions
+      const sysMatch = code.match(/system_prompt\s*=\s*["']([\s\S]*?)["']/);
+      const systemPrompt = sysMatch ? sysMatch[1] : '';
+
+      if (code.includes('# API_STORY:')) {
+        // Story mode — get story from AI, inject into code, run through NAO
+        const storyPromptMatch = code.match(/story_prompt\s*=\s*["']([\s\S]*?)["']/);
+        const storyPrompt = storyPromptMatch ? storyPromptMatch[1] : 'Tell a 3-sentence story about a robot.';
+
+        log('Asking AI for a story...');
+        const story = await callGemini(storyPrompt);
+        log('AI story: ' + story + '\n');
+
+        // Inject story into code and run
+        let modifiedCode = code.replace(/# API_STORY:.*/, `ai_story = """${story}"""`);
+        // If user hasn't written the split/say logic yet, auto-run with NAO
+        if (!modifiedCode.includes('tts.say') || modifiedCode.includes('# TODO')) {
+          modifiedCode += `
+sentences = ai_story.strip().split("\\n")
+sentences = [s for s in sentences if s.strip()]
+colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0xFF00FF]
+for i, sentence in enumerate(sentences):
+    leds.fadeRGB("FaceLeds", colors[i % len(colors)], 0.3)
+    tts.say(sentence)
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)`;
+        }
+
+        let processedCode = modifiedCode
+          .replace(/^import\s+threading\s*$/gm, 'threading = _mock_threading')
+          .replace(/^import\s+time\s*$/gm, 'import time as _time_ref; _time_ref.sleep = _mock_sleep; time = _time_ref');
+
+        log('Running...');
+        await pyodide.runPythonAsync(processedCode);
+      } else {
+        // NAO conversation mode — get AI responses for each question
+        const qMatch = code.match(/questions\s*=\s*\[([\s\S]*?)\]/);
+        const qItems = qMatch ? qMatch[1].match(/"([^"]+)"|'([^']+)'/g) : [];
+        const questions = qItems ? qItems.map(q => q.slice(1, -1)) : [];
+
+        // Get AI responses, then inject them into the code
+        const responses = [];
+        for (const q of questions) {
+          log('Thinking about: ' + q);
+          const answer = await callGemini(q, systemPrompt);
+          responses.push(answer);
+        }
+
+        // Build modified code that injects ai_response for each question
+        let modifiedCode = code.replace(/# API_NAO:.*/, '');
+        // Replace the for loop with unrolled version that includes AI responses
+        const loopStart = modifiedCode.indexOf('for question in questions:');
+        if (loopStart >= 0) {
+          const beforeLoop = modifiedCode.substring(0, loopStart);
+          let unrolled = '';
+          for (let i = 0; i < questions.length; i++) {
+            unrolled += `
+question = "${questions[i].replace(/"/g, '\\"')}"
+leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+print("Listening: " + question)
+leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+ai_response = "${responses[i].replace(/"/g, '\\"').replace(/\n/g, ' ')}"
+print("AI: " + ai_response)
+leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+tts.say(ai_response)
+`;
+          }
+          unrolled += `
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)
+tts.say("Great chat! Goodbye!")`;
+          modifiedCode = beforeLoop + unrolled;
+        }
+
+        let processedCode = modifiedCode
+          .replace(/^import\s+threading\s*$/gm, 'threading = _mock_threading')
+          .replace(/^import\s+time\s*$/gm, 'import time as _time_ref; _time_ref.sleep = _mock_sleep; time = _time_ref');
+
+        log('Running...');
+        await pyodide.runPythonAsync(processedCode);
+      }
+
+      // Execute captured NAO actions
+      const actionsJson = pyodide.runPython('_get_actions()');
+      const actions = JSON.parse(actionsJson);
+      if (actions.length > 0 && editor.executeActions) {
+        editor.executeActions(actions);
+      } else {
+        log('Done!');
+      }
+
+    } else {
+      // No API directive — run as regular Pyodide code (for NAO-only editors)
+      if (editor.run) {
+        editor.run();
+      }
+    }
+
+  } catch (e) {
+    log('Error: ' + e.message);
   }
 }
 
