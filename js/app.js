@@ -1614,4 +1614,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Navigate to hash or default
   const hash = window.location.hash.replace('#', '') || 'setup-nao';
   navigateTo(hash);
+
+  // Listen for hash changes (back/forward buttons and direct link clicks)
+  window.addEventListener('hashchange', () => {
+    const newHash = window.location.hash.replace('#', '');
+    if (newHash && PAGES.includes(newHash)) {
+      navigateTo(newHash);
+    }
+  });
 });
