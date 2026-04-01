@@ -44,6 +44,12 @@ const PAGES = [
   'ai-nao-connect',
   'ai-exercises',
   'ai-questions',
+  'face-detection',
+  'face-recognition',
+  'face-scanning',
+  'face-remembering',
+  'face-exercises',
+  'face-questions',
 ];
 
 const PAGE_TITLES = {
@@ -90,6 +96,12 @@ const PAGE_TITLES = {
   'ai-nao-connect': 'Connecting AI to NAO',
   'ai-exercises': 'Exercises',
   'ai-questions': 'Module Questions',
+  'face-detection': 'Face Detection',
+  'face-recognition': 'Recognizing Faces',
+  'face-scanning': 'Seeking Out Faces',
+  'face-remembering': 'Remembering Faces',
+  'face-exercises': 'Exercises',
+  'face-questions': 'Module Questions',
 };
 
 /* Track which pages have been initialized so we don't re-init on revisit */
@@ -1227,6 +1239,216 @@ story_prompt = "Tell a 3-sentence story about a friendly robot. One sentence per
 #   - Change LED color (use a different color per sentence)
 #   - Have NAO say the sentence
 # Turn off LEDs when done`,
+    });
+  }
+
+  /* --- Module 8: Face Off --- */
+
+  if (pageId === 'face-detection') {
+    initEditor('face-detect-editor', {
+      editorId: 'editor-face-detect',
+      previewContainerId: 'preview-face-detect',
+      outputId: 'output-face-detect',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# Subscribe to face detection
+face.subscribe("FaceDetector")
+
+# Check for a face
+data = memory.getData("FaceDetected")
+
+if data and len(data) > 0:
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    tts.say("Hello, human!")
+else:
+    tts.say("I don't see anyone.")
+
+face.unsubscribe("FaceDetector")
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)`,
+    });
+  }
+
+  if (pageId === 'face-recognition') {
+    initEditor('face-recog-editor', {
+      editorId: 'editor-face-recog',
+      previewContainerId: 'preview-face-recog',
+      outputId: 'output-face-recog',
+      defaultCode:
+`from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# Step 1: Learn a face
+tts.say("Please show me your face.")
+face.learnFace("me")
+
+# Step 2: Try to recognize
+face.subscribe("FaceRecognizer")
+data = memory.getData("FaceDetected")
+
+if data and len(data) > 0:
+    recognized_name = "me"  # Simulated recognition result
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    tts.say("I recognize you! Hello, " + recognized_name + "!")
+else:
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+    tts.say("I don't recognize this face.")
+
+face.unsubscribe("FaceRecognizer")
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)`,
+    });
+  }
+
+  if (pageId === 'face-scanning') {
+    initEditor('face-scan-editor', {
+      editorId: 'editor-face-scan',
+      previewContainerId: 'preview-face-scan',
+      outputId: 'output-face-scan',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+
+face.subscribe("FaceScanner")
+
+# Scan from left to right
+positions = [-1.0, -0.5, 0.0, 0.5, 1.0]
+found = False
+
+for pos in positions:
+    motion.angleInterpolation("HeadYaw", [pos], [1.5], True)
+    time.sleep(0.5)
+    data = memory.getData("FaceDetected")
+    if data and len(data) > 0:
+        tts.say("Found you!")
+        found = True
+        break
+
+if not found:
+    tts.say("I couldn't find anyone.")
+
+motion.angleInterpolation("HeadYaw", [0.0], [1.0], True)
+face.unsubscribe("FaceScanner")`,
+    });
+  }
+
+  if (pageId === 'face-remembering') {
+    initEditor('face-remember-editor', {
+      editorId: 'editor-face-remember',
+      previewContainerId: 'preview-face-remember',
+      outputId: 'output-face-remember',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+# Queue of remembered head positions
+positions = [[0.0, 0.0]]
+pos = 0
+last_time = 0
+
+# Simulate receiving sound directions
+sound_positions = [[0.5, 0.1], [-0.7, 0.0]]
+
+for sound_pos in sound_positions:
+    positions.append(sound_pos)
+    if len(positions) > 2:
+        positions = positions[1:]
+    motion.setAngles(["HeadYaw", "HeadPitch"], sound_pos, 0.5)
+    tts.say("I heard something!")
+    time.sleep(2.0)
+
+# Cycle through remembered positions
+for p in positions:
+    motion.setAngles(["HeadYaw", "HeadPitch"], p, 0.5)
+    time.sleep(2.0)
+
+tts.say("Done scanning positions.")`,
+    });
+  }
+
+  if (pageId === 'face-exercises') {
+    initEditor('face-ex1-editor', {
+      editorId: 'editor-face-ex1',
+      previewContainerId: 'preview-face-ex1',
+      outputId: 'output-face-ex1',
+      defaultCode:
+`# Exercise 1: Greet and Wave
+from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# TODO: When a face is detected:
+# 1. Say a greeting
+# 2. Flash the eye LEDs (use leds.fadeRGB)
+# 3. Wave by raising and moving the right arm
+
+tts.say("Hello!")`,
+    });
+
+    initEditor('face-ex2-editor', {
+      editorId: 'editor-face-ex2',
+      previewContainerId: 'preview-face-ex2',
+      outputId: 'output-face-ex2',
+      defaultCode:
+`# Exercise 2: Personalized Greetings
+from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# TODO: Create a dictionary of names to greetings
+# Train two faces using face.learnFace()
+# When a face is recognized, look up the greeting and say it
+# If the face is unknown, say a default greeting
+
+greetings = {}`,
+    });
+
+    initEditor('face-ex3-editor', {
+      editorId: 'editor-face-ex3',
+      previewContainerId: 'preview-face-ex3',
+      outputId: 'output-face-ex3',
+      defaultCode:
+`# Exercise 3: Scan, Detect, and Track
+from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+
+# TODO: Scan head from side to side
+# At each position, check for faces
+# If a face is found, stop scanning and greet
+# If no face found after full scan, say so
+
+face.subscribe("FaceScanner")
+
+# Your scanning code here
+
+face.unsubscribe("FaceScanner")`,
     });
   }
 }

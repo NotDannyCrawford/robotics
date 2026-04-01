@@ -106,8 +106,13 @@
   <div class="sidebar-divider"></div>
 
   <div class="sidebar-module-header">Module 8 — Face Off</div>
-  <a class="sidebar-item disabled">Face Detection</a>
-  <a class="sidebar-item disabled">Exercises</a>
+  <a class="sidebar-item" data-page="face-detection">Face Detection</a>
+  <a class="sidebar-item" data-page="face-recognition">Recognizing Faces</a>
+  <a class="sidebar-item" data-page="face-scanning">Seeking Out Faces</a>
+  <a class="sidebar-item" data-page="face-remembering">Remembering Faces</a>
+  <div class="sidebar-subheader">Practice</div>
+  <a class="sidebar-item" data-page="face-exercises">Exercises</a>
+  <a class="sidebar-item" data-page="face-questions">Module Questions</a>
 
   <div class="sidebar-divider"></div>
 
@@ -4551,6 +4556,454 @@ except requests.exceptions.RequestException as e:
 
     <div class="page-nav">
       <a href="#ai-exercises" class="page-nav-prev">&larr; Exercises</a>
+      <a href="#face-detection" class="page-nav-next">Face Detection &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 8 — FACE OFF ==================== -->
+
+  <!-- ==================== PAGE: Face Detection ==================== -->
+  <div id="page-face-detection" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-detection">Face Detection</a></div>
+    <h1>Face Detection</h1>
+    <p>In this module we'll experiment with NAO's ability to detect human faces. NAO has two cameras — one in its forehead and one in its chin. Using the <code>ALFaceDetection</code> module, we can have NAO detect when a human face is in its field of view and respond accordingly.</p>
+
+    <h2>How Face Detection Works</h2>
+    <p>NAO's face detection uses the top camera (forehead) to scan for faces. The <code>ALFaceDetection</code> module processes the camera feed and outputs data about any detected faces, including their position and size in the image.</p>
+    <p>The basic pipeline is:</p>
+    <ol>
+      <li>Select the top camera using <code>ALVideoDevice</code></li>
+      <li>Start the face detection module with <code>ALFaceDetection</code></li>
+      <li>Subscribe to face detection events using <code>ALMemory</code></li>
+      <li>React when a face is detected (speak, move, change LEDs, etc.)</li>
+    </ol>
+
+    <h2>Saying Hello When a Face is Detected</h2>
+    <p>Let's start simple — we'll have NAO say "Hello, human!" whenever it detects a face in its camera view.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Face Detection — Greet on Detect</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-face-detect"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['face-detect-editor'] && editors['face-detect-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['face-detect-editor'] && editors['face-detect-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['face-detect-editor'] && editors['face-detect-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('face-detect-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-face-detect"></div>
+          <div class="try-it-output" id="output-face-detect"></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Adding Sound Tracking</h2>
+    <p>We can also make NAO look in the direction of sounds using the <code>ALSoundLocalization</code> module. By combining sound tracking with face detection, NAO can turn toward a sound and then check if it sees a face.</p>
+    <p>This is useful in real-world scenarios — imagine NAO sitting at a reception desk. Someone calls out "Hey NAO!" and the robot turns toward the voice, then detects the person's face and greets them.</p>
+
+    <div class="callout-box">
+      <strong>Keep in mind:</strong> NAO's camera field of view is quite narrow. If the robot doesn't see your face, try moving your head or adjusting the robot's head angle slightly.
+    </div>
+
+    <div class="page-nav">
+      <a href="#ai-questions" class="page-nav-prev">&larr; Module Questions</a>
+      <a href="#face-recognition" class="page-nav-next">Recognizing Faces &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Recognizing Faces ==================== -->
+  <div id="page-face-recognition" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-recognition">Recognizing Faces</a></div>
+    <h1>Recognizing Faces</h1>
+    <p>In addition to detecting any human face, NAO can recognize individual faces. However, it must be trained first. We use the <code>ALFaceDetection</code> module's learning capability to teach NAO to associate a face with a name.</p>
+
+    <h2>Learning a Face</h2>
+    <p>The process works like this:</p>
+    <ol>
+      <li>Have NAO ask "Please show me your face"</li>
+      <li>Use <code>learnFace("name")</code> to capture and store the face</li>
+      <li>NAO stores the face in its internal database</li>
+      <li>Later, when NAO sees this face again, it can identify the person by name</li>
+    </ol>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Learn and Recognize a Face</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-face-recog"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['face-recog-editor'] && editors['face-recog-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['face-recog-editor'] && editors['face-recog-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['face-recog-editor'] && editors['face-recog-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('face-recog-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-face-recog"></div>
+          <div class="try-it-output" id="output-face-recog"></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>How Recognition Differs from Detection</h2>
+    <p><strong>Detection</strong> answers: "Is there a face?" (yes/no, plus position).</p>
+    <p><strong>Recognition</strong> answers: "Whose face is it?" (matches against learned faces).</p>
+    <p>Recognition requires prior training and may fail if lighting conditions or angles differ significantly from the training image.</p>
+
+    <div class="page-nav">
+      <a href="#face-detection" class="page-nav-prev">&larr; Face Detection</a>
+      <a href="#face-scanning" class="page-nav-next">Seeking Out Faces &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Seeking Out Faces ==================== -->
+  <div id="page-face-scanning" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-scanning">Seeking Out Faces</a></div>
+    <h1>Seeking Out Faces</h1>
+    <p>NAO can see a face that happens to be in front of its camera. Now we will make it actively scan its surroundings by moving its head to look for faces.</p>
+
+    <h2>Head Scanning</h2>
+    <p>The idea is simple: move NAO's head from side to side while running face detection. If the robot detects a face during the scan, it stops and greets the person.</p>
+    <p>We use <code>ALMotion.angleInterpolation()</code> to smoothly move the head between positions. The key joints are:</p>
+    <ul>
+      <li><code>HeadYaw</code> — rotates the head left/right (range: roughly -2.0 to 2.0 radians)</li>
+      <li><code>HeadPitch</code> — tilts the head up/down (range: roughly -0.7 to 0.5 radians)</li>
+    </ul>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Scan and Detect</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-face-scan"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['face-scan-editor'] && editors['face-scan-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['face-scan-editor'] && editors['face-scan-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['face-scan-editor'] && editors['face-scan-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('face-scan-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-face-scan"></div>
+          <div class="try-it-output" id="output-face-scan"></div>
+        </div>
+      </div>
+    </div>
+
+    <p>If the robot doesn't detect faces during the scan, you may need to slow down the head motion. A faster scan might cause the camera frames to blur, making detection harder.</p>
+
+    <div class="page-nav">
+      <a href="#face-recognition" class="page-nav-prev">&larr; Recognizing Faces</a>
+      <a href="#face-remembering" class="page-nav-next">Remembering Faces &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Remembering Faces ==================== -->
+  <div id="page-face-remembering" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-remembering">Remembering Faces</a></div>
+    <h1>Remembering Faces</h1>
+    <p>Now we'll combine sound tracking with face detection. NAO will look in the direction of a noise, and we'll make it remember the last two positions it heard sounds from — cycling through these positions to keep watching.</p>
+
+    <h2>Queues and Lists in Python</h2>
+    <p>A <strong>queue</strong> is a data structure where the first item added is the first item removed (like a line of people). In Python, we can use a regular list as a queue:</p>
+    <ul>
+      <li><code>list.append(item)</code> — adds to the end</li>
+      <li><code>list[0]</code> — accesses the first item</li>
+      <li><code>list = list[1:]</code> — removes the first item (keeps everything from index 1 onward)</li>
+      <li><code>len(list)</code> — returns the length</li>
+    </ul>
+
+    <h2>Using time.time()</h2>
+    <p>The function <code>time.time()</code> returns the number of seconds that have passed since midnight on January 1, 1970 (called the "epoch"). We use this to make sure NAO stays at each position for at least two seconds before moving to the next one.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Sound-Tracking with Position Memory</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-face-remember"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['face-remember-editor'] && editors['face-remember-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['face-remember-editor'] && editors['face-remember-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['face-remember-editor'] && editors['face-remember-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('face-remember-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-face-remember"></div>
+          <div class="try-it-output" id="output-face-remember"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#face-scanning" class="page-nav-prev">&larr; Seeking Out Faces</a>
+      <a href="#face-exercises" class="page-nav-next">Exercises &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Face Off Exercises ==================== -->
+  <div id="page-face-exercises" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-exercises">Exercises</a></div>
+    <h1>Exercises</h1>
+    <p>Put your face detection skills to the test. These exercises combine face detection, recognition, and NAO's motion capabilities.</p>
+
+    <!-- Exercise 1 -->
+    <div class="exercise-card">
+      <h3>Exercise 1: Greet and Wave</h3>
+      <div class="exercise-prompt">
+        When the robot sees a face, in addition to giving a greeting, make it wave its hand and flash its eye LEDs.
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 1 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-face-ex1"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['face-ex1-editor'] && editors['face-ex1-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['face-ex1-editor'] && editors['face-ex1-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['face-ex1-editor'] && editors['face-ex1-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('face-ex1-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-face-ex1"></div>
+            <div class="try-it-output" id="output-face-ex1"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>After detecting a face, raise <code>RShoulderPitch</code> to about <code>-1.0</code> rad and wave by alternating <code>RShoulderRoll</code> between <code>-0.3</code> and <code>0.3</code>. Use <code>leds.fadeRGB("FaceLeds", color, 0.3)</code> to flash the eyes.</p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code>from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+face = ALProxy("ALFaceDetection", "&lt;robot_ip&gt;", 9559)
+
+# Simulate face detected
+tts.say("Hello there!")
+
+# Flash LEDs
+leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+time.sleep(0.5)
+leds.fadeRGB("FaceLeds", 0xFFFFFF, 0.3)
+
+# Wave
+motion.angleInterpolation("RShoulderPitch", [-1.0], [0.5], True)
+for i in range(3):
+    motion.angleInterpolation("RShoulderRoll", [-0.3], [0.3], True)
+    motion.angleInterpolation("RShoulderRoll", [0.3], [0.3], True)
+motion.angleInterpolation("RShoulderPitch", [1.4], [0.5], True)
+
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise-card">
+      <h3>Exercise 2: Personalized Greetings</h3>
+      <div class="exercise-prompt">
+        Make NAO recognize two different faces and greet each person differently. Train NAO with two names, then use face recognition to determine who it sees and deliver a unique greeting for each person.
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 2 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-face-ex2"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['face-ex2-editor'] && editors['face-ex2-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['face-ex2-editor'] && editors['face-ex2-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['face-ex2-editor'] && editors['face-ex2-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('face-ex2-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-face-ex2"></div>
+            <div class="try-it-output" id="output-face-ex2"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>Use <code>face.learnFace("name")</code> to train two faces. Then use a dictionary to map names to custom greetings, e.g., <code>greetings = {"Alice": "Hey Alice, great to see you!", "Bob": "What's up, Bob!"}</code>.</p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code>from naoqi import ALProxy
+
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+face = ALProxy("ALFaceDetection", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+
+# Train two faces (done in advance)
+# face.learnFace("Alice")
+# face.learnFace("Bob")
+
+greetings = {
+    "Alice": "Hey Alice! Great to see you again!",
+    "Bob": "What's up, Bob! How are you doing?",
+}
+
+# Simulate recognition result
+recognized_name = "Alice"
+
+if recognized_name in greetings:
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    tts.say(greetings[recognized_name])
+else:
+    leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+    tts.say("Hello! I don't think we've met. What's your name?")
+
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise-card">
+      <h3>Exercise 3: Scan, Detect, and Track</h3>
+      <div class="exercise-prompt">
+        While the robot is scanning for humans by moving its head side to side, make it stop scanning if it sees a face and look directly at that person. To make it look in the correct direction, you may need to reduce the scanning speed further.
+      </div>
+
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 3 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-face-ex3"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['face-ex3-editor'] && editors['face-ex3-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['face-ex3-editor'] && editors['face-ex3-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['face-ex3-editor'] && editors['face-ex3-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('face-ex3-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-face-ex3"></div>
+            <div class="try-it-output" id="output-face-ex3"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content">
+        <p>Use a <code>while</code> loop for the head scan with a <code>face_detected</code> flag. Move the head in small increments (e.g., 0.2 rad steps with 1.5s timing). After each step, check for face detection. When a face is found, break out of the scan loop and use the face position data to adjust head angles.</p>
+      </div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content">
+        <pre><code>from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+face = ALProxy("ALFaceDetection", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+
+face.subscribe("FaceScanner")
+face_detected = False
+
+# Scan positions (left to right)
+positions = [-1.0, -0.5, 0.0, 0.5, 1.0]
+
+tts.say("I'm looking for someone...")
+leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+
+for pos in positions:
+    motion.angleInterpolation("HeadYaw", [pos], [1.5], True)
+    time.sleep(0.5)
+
+    # Check for face
+    data = memory.getData("FaceDetected")
+    if data and len(data) > 0:
+        face_detected = True
+        tts.say("I see you!")
+        leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+        break
+
+if not face_detected:
+    tts.say("I couldn't find anyone.")
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+
+# Return head to center
+motion.angleInterpolation("HeadYaw", [0.0], [1.0], True)
+face.unsubscribe("FaceScanner")
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#face-remembering" class="page-nav-prev">&larr; Remembering Faces</a>
+      <a href="#face-questions" class="page-nav-next">Module Questions &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE: Face Off Module Questions ==================== -->
+  <div id="page-face-questions" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 8 — Face Off &gt; <a href="#face-questions">Module Questions</a></div>
+    <h1>Module Questions</h1>
+    <p>Test your understanding of Module 8 by answering the questions below. Click "Reveal Answer" to check your work.</p>
+
+    <h2>Basic</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">1.</span>
+      <span class="q-text">What is the difference between face detection and face recognition?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><strong>Face detection</strong> determines whether a face is present in the image (yes or no). <strong>Face recognition</strong> identifies <em>whose</em> face it is by comparing it to previously learned faces in a database.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">2.</span>
+      <span class="q-text">Which NAO camera is typically used for face detection — the forehead camera or the chin camera?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">The <strong>forehead (top) camera</strong> is used for face detection. It has a better angle for detecting faces of people standing or sitting in front of NAO.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">3.</span>
+      <span class="q-text">What NAOqi module is used for face detection?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><code>ALFaceDetection</code> — you subscribe to it and then read face detection data from <code>ALMemory</code> using the key <code>"FaceDetected"</code>.</div>
+    </div>
+
+    <h2>Intermediate</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">4.</span>
+      <span class="q-text">What is a queue and how is it different from a regular list?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">A <strong>queue</strong> is a data structure that follows First In, First Out (FIFO) order — the first item added is the first item removed, like a line of people. A regular list allows access and removal at any position. In Python, we simulate a queue using a list with <code>append()</code> to add and slicing <code>[1:]</code> to remove the first element.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">5.</span>
+      <span class="q-text">Why might NAO fail to detect faces during a fast head scan?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">When the head moves quickly, the camera images can become <strong>blurred</strong> due to motion. The face detection algorithm needs clear, stable frames to identify facial features. Slowing down the scan speed gives the camera time to capture sharp images at each position.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">6.</span>
+      <span class="q-text">What does <code>time.time()</code> return and why is it useful for controlling robot behavior?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer"><code>time.time()</code> returns the number of seconds since January 1, 1970 (the Unix epoch) as a float. It's useful for timing robot behaviors — for example, ensuring NAO looks at a position for at least 2 seconds before moving, or measuring how long a scan takes. By comparing timestamps, you can create time-based conditions without blocking the program with <code>sleep()</code>.</div>
+    </div>
+
+    <h2>Advanced</h2>
+
+    <div class="quiz-question">
+      <span class="q-number">7.</span>
+      <span class="q-text">How would you combine face detection with sound localization to create a more natural interaction?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">Use <code>ALSoundLocalization</code> to detect where a sound comes from, then move NAO's head toward that direction using <code>ALMotion.angleInterpolation()</code> on HeadYaw and HeadPitch. Once the head is pointed toward the sound source, run face detection. If a face is found, greet the person. If not, scan a small area around the sound direction. This mimics how humans naturally turn toward voices.</div>
+    </div>
+
+    <div class="quiz-question">
+      <span class="q-number">8.</span>
+      <span class="q-text">What challenges would you face when training NAO to recognize faces in different lighting conditions?</span>
+      <button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+      <div class="quiz-answer">Lighting greatly affects face recognition accuracy. Faces trained in bright light may not be recognized in dim rooms, and vice versa. Shadows can alter facial features. Solutions include: training multiple images of the same person under different lighting, using NAO's LED eyes to provide consistent illumination, and positioning NAO in well-lit areas. Backlighting (light behind the person) is especially problematic.</div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#face-exercises" class="page-nav-prev">&larr; Exercises</a>
       <a href="#" class="page-nav-next nav-disabled">Next Module (Coming Soon) &rarr;</a>
     </div>
   </div>
