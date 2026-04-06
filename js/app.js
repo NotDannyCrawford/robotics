@@ -50,6 +50,24 @@ const PAGES = [
   'face-remembering',
   'face-exercises',
   'face-questions',
+  'obj-pixels',
+  'obj-vision',
+  'obj-naomark',
+  'obj-recognition',
+  'obj-exercises',
+  'obj-questions',
+  'hri-intro',
+  'hri-greetings',
+  'hri-peekaboo',
+  'hri-storytelling',
+  'hri-exercises',
+  'hri-questions',
+  'nav-mazes',
+  'nav-visual-cues',
+  'nav-wall-follow',
+  'nav-bfs',
+  'nav-exercises',
+  'nav-questions',
 ];
 
 const PAGE_TITLES = {
@@ -102,6 +120,24 @@ const PAGE_TITLES = {
   'face-remembering': 'Remembering Faces',
   'face-exercises': 'Exercises',
   'face-questions': 'Module Questions',
+  'obj-pixels': 'Digital Images & Pixels',
+  'obj-vision': 'Computer Vision',
+  'obj-naomark': 'NAOMark-Controlled Robot',
+  'obj-recognition': 'Object Recognition',
+  'obj-exercises': 'Exercises',
+  'obj-questions': 'Module Questions',
+  'hri-intro': 'Human-Robot Interaction',
+  'hri-greetings': 'Greetings',
+  'hri-peekaboo': 'Peek-a-Boo',
+  'hri-storytelling': 'Storytelling',
+  'hri-exercises': 'Exercises',
+  'hri-questions': 'Module Questions',
+  'nav-mazes': 'Solving Mazes',
+  'nav-visual-cues': 'Maze Solving with Visual Cues',
+  'nav-wall-follow': 'Wall Following Algorithm',
+  'nav-bfs': 'Finding the Shortest Path',
+  'nav-exercises': 'Exercises',
+  'nav-questions': 'Module Questions',
 };
 
 /* Track which pages have been initialized so we don't re-init on revisit */
@@ -1449,6 +1485,550 @@ face.subscribe("FaceScanner")
 # Your scanning code here
 
 face.unsubscribe("FaceScanner")`,
+    });
+  }
+
+  /* --- Module 9: Object Recognition --- */
+
+  if (pageId === 'obj-pixels') {
+    initEditor('obj-pixels-editor', {
+      editorId: 'editor-obj-pixels',
+      outputId: 'output-obj-pixels',
+      defaultCode:
+`# NAO Camera Specifications
+width = 1288
+height = 968
+fps = 30
+
+total_pixels = width * height
+megapixels = total_pixels / 1_000_000
+
+print(f"Resolution: {width} x {height}")
+print(f"Total pixels per frame: {total_pixels:,}")
+print(f"Megapixels: {megapixels:.2f}")
+print(f"Frame rate: {fps} fps")
+print(f"Pixels per second: {total_pixels * fps:,}")`,
+    });
+  }
+
+  if (pageId === 'obj-naomark') {
+    initEditor('obj-naomark-editor', {
+      editorId: 'editor-obj-naomark',
+      previewContainerId: 'preview-obj-naomark',
+      outputId: 'output-obj-naomark',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+landmark = ALProxy("ALLandMarkDetection", "<robot_ip>", 9559)
+
+landmark.subscribe("NaoMarkDemo")
+
+# Map NAOMark IDs to actions
+LEFT_MARK = 68
+RIGHT_MARK = 84
+
+tts.say("Show me a NAOMark!")
+time.sleep(1.0)
+
+data = memory.getData("LandmarkDetected")
+if data and len(data) > 0:
+    mark_id = 68  # Simulated
+    if mark_id == LEFT_MARK:
+        tts.say("Turning left!")
+        motion.walkTo(0, 0, 1.57)
+    elif mark_id == RIGHT_MARK:
+        tts.say("Turning right!")
+        motion.walkTo(0, 0, -1.57)
+else:
+    tts.say("No mark detected. Walking forward.")
+    motion.walkTo(0.04, 0, 0)
+
+landmark.unsubscribe("NaoMarkDemo")`,
+    });
+  }
+
+  if (pageId === 'obj-recognition') {
+    initEditor('obj-recog-editor', {
+      editorId: 'editor-obj-recog',
+      previewContainerId: 'preview-obj-recog',
+      outputId: 'output-obj-recog',
+      defaultCode:
+`from naoqi import ALProxy
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+# Simulate detecting an object
+detected = "Brochure front"
+
+# Use startswith() to match any view
+if detected.startswith("Brochure"):
+    tts.say("I see the brochure!")
+    motion.walkTo(0.10, 0, 0)
+elif detected.startswith("Mug"):
+    tts.say("I see a mug!")
+else:
+    tts.say("Unknown object detected.")`,
+    });
+  }
+
+  if (pageId === 'obj-exercises') {
+    initEditor('obj-ex1-editor', {
+      editorId: 'editor-obj-ex1',
+      previewContainerId: 'preview-obj-ex1',
+      outputId: 'output-obj-ex1',
+      defaultCode:
+`# Exercise 1: NAOMark Navigator
+from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+landmark = ALProxy("ALLandMarkDetection", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+
+# TODO: Subscribe to landmark detection
+# TODO: Define TURN_MARK and STOP_MARK IDs
+# TODO: Loop checking for NAOMarks
+#   - If TURN_MARK detected, turn NAO
+#   - If STOP_MARK detected, stop
+# TODO: Unsubscribe when done
+
+tts.say("Ready for NAOMark navigation!")`,
+    });
+
+    initEditor('obj-ex2-editor', {
+      editorId: 'editor-obj-ex2',
+      previewContainerId: 'preview-obj-ex2',
+      outputId: 'output-obj-ex2',
+      defaultCode:
+`# Exercise 2: Object Announcer
+from naoqi import ALProxy
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+# TODO: Create a dictionary mapping object prefixes to messages
+# TODO: Check detected object with startswith()
+# TODO: Announce the object and walk toward it
+
+objects = {}
+
+tts.say("Looking for objects...")`,
+    });
+
+    initEditor('obj-ex3-editor', {
+      editorId: 'editor-obj-ex3',
+      previewContainerId: 'preview-obj-ex3',
+      outputId: 'output-obj-ex3',
+      defaultCode:
+`# Exercise 3: Seek and Walk
+from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+
+# TODO: Scan head positions (like Module 8)
+# TODO: At each position, check for detected objects
+# TODO: If found, read HeadYaw angle
+# TODO: Turn toward object using walkTo(0, 0, headYaw)
+# TODO: Walk forward
+
+tts.say("Searching...")`,
+    });
+  }
+
+  /* --- Module 10: Human-Robot Interaction --- */
+
+  if (pageId === 'hri-greetings') {
+    initEditor('hri-greet-editor', {
+      editorId: 'editor-hri-greet',
+      previewContainerId: 'preview-hri-greet',
+      outputId: 'output-hri-greet',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+posture = ALProxy("ALRobotPosture", "<robot_ip>", 9559)
+
+posture.goToPosture("Stand", 0.5)
+
+# Handshake: extend right arm forward
+tts.say("Hello! Let me shake your hand.")
+motion.angleInterpolation(
+    ["RShoulderPitch", "RElbowRoll"],
+    [0.2, 1.0], [0.5, 0.5], True)
+time.sleep(1.0)
+motion.angleInterpolation(
+    ["RShoulderPitch", "RElbowRoll"],
+    [1.4, 0.5], [0.5, 0.5], True)
+
+# High five: raise arm up
+tts.say("High five!")
+motion.angleInterpolation("RShoulderPitch", [-0.5], [0.5], True)
+motion.openHand("RHand")
+time.sleep(1.0)
+motion.angleInterpolation("RShoulderPitch", [1.4], [0.5], True)
+
+# Wave goodbye
+tts.say("Goodbye!")
+motion.angleInterpolation("RShoulderPitch", [-1.0], [0.5], True)
+for i in range(3):
+    motion.angleInterpolation("RShoulderRoll", [-0.3], [0.3], True)
+    motion.angleInterpolation("RShoulderRoll", [0.3], [0.3], True)
+motion.angleInterpolation("RShoulderPitch", [1.4], [0.5], True)`,
+    });
+  }
+
+  if (pageId === 'hri-peekaboo') {
+    initEditor('hri-peek-editor', {
+      editorId: 'editor-hri-peek',
+      previewContainerId: 'preview-hri-peek',
+      outputId: 'output-hri-peek',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# Hide face (bring hands up to cover eyes)
+tts.say("I'm hiding!")
+motion.angleInterpolation(
+    ["RShoulderPitch", "LShoulderPitch"],
+    [-1.5, -1.5], [0.5, 0.5], True)
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)
+time.sleep(1.0)
+
+tts.say("Where am I?")
+time.sleep(2.0)
+
+# Reveal face (lower hands)
+motion.angleInterpolation(
+    ["RShoulderPitch", "LShoulderPitch"],
+    [1.4, 1.4], [0.5, 0.5], True)
+leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+tts.say("Peek a boo! I see you!")
+
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)`,
+    });
+  }
+
+  if (pageId === 'hri-storytelling') {
+    initEditor('hri-story-editor', {
+      editorId: 'editor-hri-story',
+      previewContainerId: 'preview-hri-story',
+      outputId: 'output-hri-story',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+
+# Character A: deep voice, blue
+def say_as_a(line):
+    tts.setParameter("pitchShift", 0.8)
+    leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+    tts.say(line)
+
+# Character B: high voice, red
+def say_as_b(line):
+    tts.setParameter("pitchShift", 1.4)
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+    tts.say(line)
+
+# Tell a story!
+leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+tts.say("Once upon a time...")
+time.sleep(1.0)
+
+say_as_a("Hello friend! What a beautiful day!")
+time.sleep(0.5)
+say_as_b("Indeed! Shall we go on an adventure?")
+say_as_a("Let's go!")
+
+# Gesture: nod excitedly
+motion.angleInterpolation("HeadPitch", [0.3, -0.1, 0.0], [0.3, 0.6, 0.9], True)
+
+leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+tts.setParameter("pitchShift", 1.0)
+tts.say("The end!")
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)`,
+    });
+  }
+
+  if (pageId === 'hri-exercises') {
+    initEditor('hri-ex1-editor', {
+      editorId: 'editor-hri-ex1',
+      previewContainerId: 'preview-hri-ex1',
+      outputId: 'output-hri-ex1',
+      defaultCode:
+`# Exercise 1: Rock Paper Scissors
+import random
+from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+
+# TODO: Pick random choice for NAO
+# TODO: Count down "Rock! Paper! Scissors!"
+# TODO: Show hand gesture (open/close hand)
+# TODO: Announce NAO's choice
+
+tts.say("Let's play rock paper scissors!")`,
+    });
+
+    initEditor('hri-ex2-editor', {
+      editorId: 'editor-hri-ex2',
+      previewContainerId: 'preview-hri-ex2',
+      outputId: 'output-hri-ex2',
+      defaultCode:
+`# Exercise 2: Robot Skit
+from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+
+# TODO: Create character functions with different pitchShift and LED colors
+# TODO: Write dialogue between 2+ characters
+# TODO: Add gestures and pauses between lines
+
+tts.say("The show is about to begin!")`,
+    });
+
+    initEditor('hri-ex3-editor', {
+      editorId: 'editor-hri-ex3',
+      previewContainerId: 'preview-hri-ex3',
+      outputId: 'output-hri-ex3',
+      defaultCode:
+`# Exercise 3: Interactive Greeter
+from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+leds = ALProxy("ALLeds", "<robot_ip>", 9559)
+face = ALProxy("ALFaceDetection", "<robot_ip>", 9559)
+
+# TODO: Detect a face
+# TODO: Wave and greet
+# TODO: Have a short conversation
+# TODO: Say goodbye
+
+tts.say("Hello! I'm looking for someone to talk to!")`,
+    });
+  }
+
+  /* --- Module 11: Finding Your Way --- */
+
+  if (pageId === 'nav-visual-cues') {
+    initEditor('nav-cues-editor', {
+      editorId: 'editor-nav-cues',
+      previewContainerId: 'preview-nav-cues',
+      outputId: 'output-nav-cues',
+      defaultCode:
+`from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+memory = ALProxy("ALMemory", "<robot_ip>", 9559)
+landmark = ALProxy("ALLandMarkDetection", "<robot_ip>", 9559)
+
+landmark.subscribe("MazeNav")
+
+LEFT_MARK = 68   # NAOMark for left turn
+RIGHT_MARK = 84  # NAOMark for right turn
+STEP = 0.04      # Walk 4cm forward per step
+
+# Simulate maze steps: forward, forward, left turn, forward, right turn
+steps = [None, None, LEFT_MARK, None, RIGHT_MARK]
+
+for mark in steps:
+    if mark is None:
+        tts.say("Walking forward")
+        motion.walkTo(STEP, 0, 0)
+    elif mark == LEFT_MARK:
+        tts.say("Left turn!")
+        motion.walkTo(0, 0, 1.57)
+    elif mark == RIGHT_MARK:
+        tts.say("Right turn!")
+        motion.walkTo(0, 0, -1.57)
+    time.sleep(0.5)
+
+tts.say("Maze complete!")
+landmark.unsubscribe("MazeNav")`,
+    });
+  }
+
+  if (pageId === 'nav-wall-follow') {
+    initEditor('nav-wall-editor', {
+      editorId: 'editor-nav-wall',
+      previewContainerId: 'preview-nav-wall',
+      outputId: 'output-nav-wall',
+      defaultCode:
+`from naoqi import ALProxy
+import math
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+front = False    # Wall in front?
+rear = False     # Wall to the right?
+forward_dist = 0.1  # How far to walk per cell (meters)
+
+def compute_next_action():
+    if not rear:  # No wall to the right
+        tts.say("No wall right. Turning right.")
+        motion.walkTo(0, 0, -math.pi/2)  # Turn right
+        motion.walkTo(forward_dist, 0, 0)  # Walk forward
+    elif rear and not front:  # Wall right, no wall front
+        tts.say("Wall right, clear ahead. Walking forward.")
+        motion.walkTo(forward_dist, 0, 0)
+    else:  # Wall right AND wall front
+        tts.say("Walls right and front. Turning left.")
+        motion.walkTo(0, 0, math.pi/2)  # Turn left
+
+# Simulate a few maze steps
+# Step 1: wall to right, clear ahead
+rear = True
+front = False
+compute_next_action()
+
+# Step 2: no wall to right
+rear = False
+front = False
+compute_next_action()
+
+# Step 3: walls on both sides
+rear = True
+front = True
+compute_next_action()
+
+tts.say("Done!")`,
+    });
+  }
+
+  if (pageId === 'nav-bfs') {
+    initEditor('nav-bfs-editor', {
+      editorId: 'editor-nav-bfs',
+      outputId: 'output-nav-bfs',
+      defaultCode:
+`# BFS Maze Solver
+# 0 = open path, 1 = wall
+maze = [
+    [0, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+]
+
+start = (0, 0)
+goal = (4, 4)
+rows, cols = len(maze), len(maze[0])
+
+# TODO: Implement BFS
+# 1. Create a queue with the start position
+# 2. Track visited cells with their BFS values
+# 3. Explore neighbors (up, down, left, right)
+# 4. When goal is found, trace back the shortest path
+
+print("Maze:")
+for row in maze:
+    print(row)
+print(f"\\nStart: {start}, Goal: {goal}")
+print("\\nImplement BFS to find the shortest path!")`,
+    });
+  }
+
+  if (pageId === 'nav-exercises') {
+    initEditor('nav-ex1-editor', {
+      editorId: 'editor-nav-ex1',
+      previewContainerId: 'preview-nav-ex1',
+      outputId: 'output-nav-ex1',
+      defaultCode:
+`# Exercise 1: Wall Follower with State Machine
+from naoqi import ALProxy
+import math
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+# TODO: Implement wall-following using a state machine
+# States: IDLE, FRONT_PRESSED, REAR_PRESSED, BOTH_PRESSED
+# When middle button pressed, execute action based on state
+# Then reset state to IDLE
+
+forward_dist = 0.1
+tts.say("Ready for wall following!")`,
+    });
+
+    initEditor('nav-ex2-editor', {
+      editorId: 'editor-nav-ex2',
+      previewContainerId: 'preview-nav-ex2',
+      outputId: 'output-nav-ex2',
+      defaultCode:
+`# Exercise 2: Left-Hand Rule
+from naoqi import ALProxy
+import math
+
+motion = ALProxy("ALMotion", "<robot_ip>", 9559)
+tts = ALProxy("ALTextToSpeech", "<robot_ip>", 9559)
+
+# TODO: Implement left-hand-following
+# Mirror the right-hand rule:
+# 1. No wall LEFT? Turn left + walk
+# 2. Wall left, no wall front? Walk forward
+# 3. Wall left + wall front? Turn right
+
+forward_dist = 0.1
+left = False
+front = False
+
+tts.say("Using left-hand rule!")`,
+    });
+
+    initEditor('nav-ex3-editor', {
+      editorId: 'editor-nav-ex3',
+      outputId: 'output-nav-ex3',
+      defaultCode:
+`# Exercise 3: BFS Maze Solver
+# Implement breadth-first search to find shortest path
+
+maze = [
+    [0, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+]
+
+start = (0, 0)
+goal = (4, 4)
+rows, cols = len(maze), len(maze[0])
+
+# TODO: Create queue and visited dict
+# TODO: BFS loop
+# TODO: Trace back path from goal to start
+# TODO: Print the shortest path
+
+print("Find the shortest path from", start, "to", goal)`,
     });
   }
 }

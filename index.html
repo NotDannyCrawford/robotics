@@ -117,20 +117,35 @@
   <div class="sidebar-divider"></div>
 
   <div class="sidebar-module-header">Module 9 — Object Recognition</div>
-  <a class="sidebar-item disabled">Visual Recognition</a>
-  <a class="sidebar-item disabled">Exercises</a>
+  <a class="sidebar-item" data-page="obj-pixels">Digital Images &amp; Pixels</a>
+  <a class="sidebar-item" data-page="obj-vision">Computer Vision</a>
+  <a class="sidebar-item" data-page="obj-naomark">NAOMark-Controlled Robot</a>
+  <a class="sidebar-item" data-page="obj-recognition">Object Recognition</a>
+  <div class="sidebar-subheader">Practice</div>
+  <a class="sidebar-item" data-page="obj-exercises">Exercises</a>
+  <a class="sidebar-item" data-page="obj-questions">Module Questions</a>
 
   <div class="sidebar-divider"></div>
 
   <div class="sidebar-module-header">Module 10 — Human-Robot Interaction</div>
-  <a class="sidebar-item disabled">Interaction Design</a>
-  <a class="sidebar-item disabled">Exercises</a>
+  <a class="sidebar-item" data-page="hri-intro">Human-Robot Interaction</a>
+  <a class="sidebar-item" data-page="hri-greetings">Greetings</a>
+  <a class="sidebar-item" data-page="hri-peekaboo">Peek-a-Boo</a>
+  <a class="sidebar-item" data-page="hri-storytelling">Storytelling</a>
+  <div class="sidebar-subheader">Practice</div>
+  <a class="sidebar-item" data-page="hri-exercises">Exercises</a>
+  <a class="sidebar-item" data-page="hri-questions">Module Questions</a>
 
   <div class="sidebar-divider"></div>
 
   <div class="sidebar-module-header">Module 11 — Finding Your Way</div>
-  <a class="sidebar-item disabled">Navigation</a>
-  <a class="sidebar-item disabled">Exercises</a>
+  <a class="sidebar-item" data-page="nav-mazes">Solving Mazes</a>
+  <a class="sidebar-item" data-page="nav-visual-cues">Maze Solving with Visual Cues</a>
+  <a class="sidebar-item" data-page="nav-wall-follow">Wall Following Algorithm</a>
+  <a class="sidebar-item" data-page="nav-bfs">Finding the Shortest Path</a>
+  <div class="sidebar-subheader">Practice</div>
+  <a class="sidebar-item" data-page="nav-exercises">Exercises</a>
+  <a class="sidebar-item" data-page="nav-questions">Module Questions</a>
 </nav>
 
 <!-- ========== MAIN CONTENT ========== -->
@@ -5004,7 +5019,1030 @@ leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre>
 
     <div class="page-nav">
       <a href="#face-exercises" class="page-nav-prev">&larr; Exercises</a>
-      <a href="#" class="page-nav-next nav-disabled">Next Module (Coming Soon) &rarr;</a>
+      <a href="#obj-pixels" class="page-nav-next">Digital Images &amp; Pixels &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 9 — OBJECT RECOGNITION ==================== -->
+
+  <div id="page-obj-pixels" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-pixels">Digital Images &amp; Pixels</a></div>
+    <h1>Digital Images &amp; Pixels</h1>
+    <p>You may have used a digital camera and heard phrases such as "10 megapixels." What is a megapixel? A megapixel is 1,000,000 pixels. What is a pixel? "Pixel" stands for <strong>picture element</strong>. A pixel is the smallest part of an image or screen — a tiny area that is a single color.</p>
+    <p>A digital photo is composed of pixels. Photos taken by a "10 megapixel" camera have 10 million pixels. Every digital camera has a sensor that converts light coming through the lens into digital signals, which are then used to create the pixels of the image.</p>
+
+    <h2>NAO's Cameras</h2>
+    <p>NAO has video cameras that work similarly. However, NAO's camera doesn't take a single image when a button is pressed. Instead, it takes a <strong>continuous stream</strong> of images.</p>
+    <ul>
+      <li><strong>Resolution:</strong> 1288 x 968 pixels (1288 pixels wide, 968 pixels high)</li>
+      <li><strong>Frame rate:</strong> 30 frames per second (fps) — the camera captures 30 images every second</li>
+    </ul>
+    <p>The <strong>resolution</strong> refers to how many pixels there are along the length and breadth of the image. The <strong>frame rate</strong> refers to how many images are taken per second.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Camera Info</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-obj-pixels"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['obj-pixels-editor'] && editors['obj-pixels-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['obj-pixels-editor'] && editors['obj-pixels-editor'].resetCode()">Reset</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('obj-pixels-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-output" id="output-obj-pixels" style="min-height:80px;"></div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#face-questions" class="page-nav-prev">&larr; Module Questions</a>
+      <a href="#obj-vision" class="page-nav-next">Computer Vision &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-obj-vision" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-vision">Computer Vision</a></div>
+    <h1>Computer Vision</h1>
+    <p>From a single digital image, we humans can identify the objects within it easily. When presented with a picture of a beach, we can readily say it shows a beach, and point out the sand, sea, clouds, and trees.</p>
+    <p>For a computer, this task — known as <strong>computer vision</strong> — is not easy at all. The image is entirely made up of pixels, which are just numbers representing colors. Given an image of a cup on a table, it's hard for the computer to tell that one pixel is part of the cup while the next pixel is the table.</p>
+
+    <h2>Features</h2>
+    <p>In computer vision, the algorithm first finds <strong>features</strong> in the image. Features are distinguishing parts that help identify objects. Typical features include:</p>
+    <ul>
+      <li><strong>Edges</strong> — occur because objects look different from the background</li>
+      <li><strong>Texture</strong> — some objects have uniform textures</li>
+      <li><strong>Color</strong> — difficult to use reliably because the same color looks very different under various lighting conditions</li>
+    </ul>
+
+    <h2>Scale-Invariant Features (SIFT)</h2>
+    <p>A good feature should be <strong>scale-invariant</strong> — meaning it can be detected regardless of how big or small the object is in the image. A common feature set used in computer vision is the <strong>Scale-Invariant Feature Transform (SIFT)</strong>.</p>
+    <p>The idea is that features are extracted from an image and compared to a database of labeled images. The object in the database with the closest matching features is chosen. For example, if a cup has SIFT features A, B, and C, and a new image also has features A, B, and C, it is likely a cup.</p>
+
+    <div class="page-nav">
+      <a href="#obj-pixels" class="page-nav-prev">&larr; Digital Images &amp; Pixels</a>
+      <a href="#obj-naomark" class="page-nav-next">NAOMark-Controlled Robot &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-obj-naomark" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-naomark">NAOMark-Controlled Robot</a></div>
+    <h1>NAOMark-Controlled Robot</h1>
+    <p>NAOMarks are special circular visual markers designed for NAO. Each NAOMark has a unique identification number that NAO can detect using the <code>ALLandMarkDetection</code> module.</p>
+    <p>We will use these NAOMarks as input to control NAO's actions. In earlier modules, we created a voice-controlled robot. Now we will build a robot that responds to <strong>visual cues</strong>.</p>
+
+    <h2>How NAOMark Detection Works</h2>
+    <ol>
+      <li>NAO's camera scans for the unique circular pattern of NAOMarks</li>
+      <li>When detected, the module returns the mark's identification number</li>
+      <li>A Switch Case maps each ID to a different action (e.g., walk forward, turn left, turn right)</li>
+    </ol>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>NAOMark-Controlled Walking</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-obj-naomark"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['obj-naomark-editor'] && editors['obj-naomark-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['obj-naomark-editor'] && editors['obj-naomark-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['obj-naomark-editor'] && editors['obj-naomark-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('obj-naomark-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-obj-naomark"></div>
+          <div class="try-it-output" id="output-obj-naomark"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout-box">
+      <strong>Hint:</strong> NAOMarks can sometimes be confused with similar-looking marks. Make sure the 3 NAOMarks you choose look distinctly different from each other.
+    </div>
+
+    <div class="page-nav">
+      <a href="#obj-vision" class="page-nav-prev">&larr; Computer Vision</a>
+      <a href="#obj-recognition" class="page-nav-next">Object Recognition &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-obj-recognition" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-recognition">Object Recognition</a></div>
+    <h1>Object Recognition</h1>
+    <p>In the previous section, we detected NAOMarks with a built-in algorithm. Now we'll explore defining and detecting <strong>general objects</strong> using <code>ALVisionRecognition</code>.</p>
+
+    <h2>Teaching NAO to Recognize Objects</h2>
+    <p>The process involves creating a database of known objects:</p>
+    <ol>
+      <li>Open the Video Monitor in Choregraphe (View &rarr; Video Monitor)</li>
+      <li>Place the object in front of NAO's camera</li>
+      <li>Click the learn button to capture the image</li>
+      <li>Trace the outline of the object in the captured image</li>
+      <li>Name the object — its features will be stored in the database</li>
+      <li>Send the database to NAO</li>
+    </ol>
+
+    <h2>Walking to a Detected Object</h2>
+    <p>Once NAO can recognize an object, we can make it walk toward it. The Vision Reco box returns the object's name. We use Python's <code>startswith()</code> method to check if the detected object matches what we're looking for.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Detect and Walk to Object</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-obj-recog"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['obj-recog-editor'] && editors['obj-recog-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['obj-recog-editor'] && editors['obj-recog-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['obj-recog-editor'] && editors['obj-recog-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('obj-recog-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-obj-recog"></div>
+          <div class="try-it-output" id="output-obj-recog"></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>The <code>startswith()</code> Method</h2>
+    <p>When an object is detected, the Vision Reco box returns a string like "book 1" or "book 2" for different pages/sides. We only care that it starts with "book":</p>
+    <pre><code>if p.startswith("Brochure"):
+    motionProxy = ALProxy("ALMotion")
+    motionProxy.walkTo(0.10, 0, 0)</code></pre>
+    <p>This way, "Brochure 1", "Brochure 2", and "Brochure front" all match.</p>
+
+    <div class="callout-box">
+      <strong>Warning:</strong> Be careful that NAO does not walk over the object. Once NAO is close, the object will be outside the camera's field of view and NAO will stop.</div>
+
+    <div class="page-nav">
+      <a href="#obj-naomark" class="page-nav-prev">&larr; NAOMark-Controlled Robot</a>
+      <a href="#obj-exercises" class="page-nav-next">Exercises &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-obj-exercises" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-exercises">Exercises</a></div>
+    <h1>Exercises</h1>
+    <p>Put your object recognition skills to the test. These exercises combine vision, walking, and decision-making.</p>
+
+    <div class="exercise-card">
+      <h3>Exercise 1: NAOMark Navigator</h3>
+      <div class="exercise-prompt">Use one NAOMark to make NAO start turning in one direction, and another NAOMark to stop its motion. This allows you to use visual landmarks to direct NAO's movements.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 1 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-obj-ex1"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['obj-ex1-editor'] && editors['obj-ex1-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex1-editor'] && editors['obj-ex1-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex1-editor'] && editors['obj-ex1-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('obj-ex1-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-obj-ex1"></div>
+            <div class="try-it-output" id="output-obj-ex1"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Use <code>ALLandMarkDetection</code> to subscribe to landmark events. Map mark ID 64 to "turn left" and mark ID 80 to "stop." Use <code>motion.walkTo(0, 0, angle)</code> for turning.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+landmark = ALProxy("ALLandMarkDetection", "&lt;robot_ip&gt;", 9559)
+
+landmark.subscribe("NaoMarkNav")
+
+TURN_MARK = 64
+STOP_MARK = 80
+running = True
+
+while running:
+    data = memory.getData("LandmarkDetected")
+    if data and len(data) > 0:
+        mark_id = data[1][0][1][0]
+        if mark_id == TURN_MARK:
+            tts.say("Turning!")
+            motion.walkTo(0, 0, 1.57)  # Turn 90 degrees left
+        elif mark_id == STOP_MARK:
+            tts.say("Stopping!")
+            running = False
+    time.sleep(0.5)
+
+landmark.unsubscribe("NaoMarkNav")</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 2: Object Announcer</h3>
+      <div class="exercise-prompt">Use the Switch Case box to enumerate all sides/pages of a 3D object, and have NAO walk to the object without using Python. Train multiple views of the same object in the vision database.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 2 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-obj-ex2"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['obj-ex2-editor'] && editors['obj-ex2-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex2-editor'] && editors['obj-ex2-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex2-editor'] && editors['obj-ex2-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('obj-ex2-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-obj-ex2"></div>
+            <div class="try-it-output" id="output-obj-ex2"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Train the object from multiple angles in the vision database. Use <code>startswith()</code> to match any view of the same object. Announce the object name with <code>tts.say()</code> and walk a small distance forward.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+vision = ALProxy("ALVisionRecognition", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+
+vision.subscribe("ObjectAnnouncer")
+
+objects = {
+    "Book": "I see a book!",
+    "Mug": "I see a mug!",
+    "Box": "I see a box!",
+}
+
+data = memory.getData("PictureDetected")
+if data and len(data) > 0:
+    detected_name = data[0]
+    for prefix, message in objects.items():
+        if detected_name.startswith(prefix):
+            tts.say(message)
+            motion.walkTo(0.10, 0, 0)
+            break
+else:
+    tts.say("I don't see anything I recognize.")
+
+vision.unsubscribe("ObjectAnnouncer")</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 3: Seek and Walk</h3>
+      <div class="exercise-prompt">Using Python, have NAO search for an object by scanning its head. Once it sees the object, use the HeadYaw angle to determine which direction to turn and walk. If the head is pointed left, NAO should turn left and then walk forward.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 3 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-obj-ex3"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['obj-ex3-editor'] && editors['obj-ex3-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex3-editor'] && editors['obj-ex3-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['obj-ex3-editor'] && editors['obj-ex3-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('obj-ex3-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-obj-ex3"></div>
+            <div class="try-it-output" id="output-obj-ex3"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Scan head positions like in Module 8. At each position, check <code>memory.getData("PictureDetected")</code>. When found, read the current HeadYaw angle with <code>motion.getAngles("HeadYaw", True)</code> and use <code>motion.walkTo(0, 0, headYaw)</code> to turn toward it, then walk forward.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import time
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+vision = ALProxy("ALVisionRecognition", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+
+vision.subscribe("SeekWalk")
+positions = [-1.0, -0.5, 0.0, 0.5, 1.0]
+found = False
+
+tts.say("Searching for object...")
+
+for pos in positions:
+    motion.angleInterpolation("HeadYaw", [pos], [1.5], True)
+    time.sleep(0.5)
+    data = memory.getData("PictureDetected")
+    if data and len(data) > 0:
+        head_yaw = motion.getAngles("HeadYaw", True)[0]
+        tts.say("Found it!")
+        motion.walkTo(0, 0, head_yaw)  # Turn toward object
+        motion.walkTo(0.20, 0, 0)       # Walk forward
+        found = True
+        break
+
+if not found:
+    tts.say("I couldn't find the object.")
+
+motion.angleInterpolation("HeadYaw", [0.0], [1.0], True)
+vision.unsubscribe("SeekWalk")</code></pre></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#obj-recognition" class="page-nav-prev">&larr; Object Recognition</a>
+      <a href="#obj-questions" class="page-nav-next">Module Questions &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-obj-questions" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 9 — Object Recognition &gt; <a href="#obj-questions">Module Questions</a></div>
+    <h1>Module Questions</h1>
+    <p>Test your understanding of Module 9 by answering the questions below.</p>
+
+    <h2>Basic</h2>
+    <div class="quiz-question"><span class="q-number">1.</span><span class="q-text">What is a pixel?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">A pixel (picture element) is the smallest part of a digital image. It is a tiny area that represents a single color. Digital images are made up of millions of pixels arranged in a grid.</div></div>
+    <div class="quiz-question"><span class="q-number">2.</span><span class="q-text">What does a NAOMark box in Choregraphe do?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">The NAOMark box detects NAOMarks (special circular visual markers) using NAO's camera. It returns the identification number of the detected mark, or triggers a "no mark" output if none are found. This allows you to map different marks to different robot actions.</div></div>
+
+    <h2>Intermediate</h2>
+    <div class="quiz-question"><span class="q-number">3.</span><span class="q-text">How does object recognition work?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Object recognition works by extracting <strong>features</strong> (edges, textures, distinctive patterns) from camera images and comparing them against a database of known objects. The object with the closest matching features is identified. NAO uses scale-invariant features so objects can be recognized at different distances and angles.</div></div>
+    <div class="quiz-question"><span class="q-number">4.</span><span class="q-text">Is color a good feature to use in computer vision? Why or why not?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Color is generally <strong>not a reliable feature</strong> because the same color looks very different under various lighting conditions. A red cup might appear orange under warm light or dark brown in shadow. While our eyes can adjust for lighting, computers struggle with this. Features like edges and textures are more robust to lighting changes.</div></div>
+    <div class="quiz-question"><span class="q-number">5.</span><span class="q-text">When learning a complex object, why do we need to provide many different images?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Complex objects look different from different perspectives. A mug looks different from the side vs. from above, and a book looks different on each page. By providing multiple images from different angles and sides, we give NAO a more complete set of features to match against, improving recognition accuracy.</div></div>
+
+    <h2>Advanced</h2>
+    <div class="quiz-question"><span class="q-number">6.</span><span class="q-text">How do we use Python to check if a string starts with a prefix? For example, how do we check if <code>mystr</code> starts with "Abc"?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Use the <code>startswith()</code> method: <code>mystr.startswith("Abc")</code>. This returns <code>True</code> if the string begins with "Abc" and <code>False</code> otherwise. This is useful in object recognition because detected objects may have suffixes like "book 1" or "book front" — checking <code>startswith("book")</code> matches all of them.</div></div>
+    <div class="quiz-question"><span class="q-number">7.</span><span class="q-text">In the Advanced Task, why does the robot stop walking once it reaches the object?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Once NAO gets close to the object, the object will be <strong>outside the camera's field of view</strong> (below or too close to see). Since the Vision Reco box can no longer detect the object, the walking behavior stops. This is a natural stopping mechanism — but you should be careful that NAO doesn't walk <em>over</em> the object.</div></div>
+
+    <div class="page-nav">
+      <a href="#obj-exercises" class="page-nav-prev">&larr; Exercises</a>
+      <a href="#hri-intro" class="page-nav-next">Human-Robot Interaction &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 10 — HUMAN-ROBOT INTERACTION ==================== -->
+
+  <div id="page-hri-intro" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-intro">Human-Robot Interaction</a></div>
+    <h1>Human-Robot Interaction</h1>
+    <p>Robots can do many things on their own. But as humans, we want to build robots that <strong>interact</strong> with us. You may already interact with robots every day — some cars can parallel park themselves, and other robots assemble manufactured goods.</p>
+    <p><strong>Human-robot interaction (HRI)</strong> studies the interactions between humans and robots. This field combines robotics and psychology, seeking to answer questions like: How can humans better control robots? How can humans and robots work together? How can we improve the human experience and make robots more effective tools?</p>
+    <p>In this module, we will program NAO to interact with humans. NAO appeals to humans because of its humanoid shape and "cute" design. By the end of this lesson, you will have completed three tasks:</p>
+    <ul>
+      <li>Make NAO communicate with hand motions — handshakes, high fives, and waving goodbye</li>
+      <li>Program NAO to play peek-a-boo with children</li>
+      <li>Re-enact a scene from a play using voice, motion, and lights</li>
+    </ul>
+
+    <div class="page-nav">
+      <a href="#obj-questions" class="page-nav-prev">&larr; Module Questions</a>
+      <a href="#hri-greetings" class="page-nav-next">Greetings &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-hri-greetings" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-greetings">Greetings</a></div>
+    <h1>Greetings</h1>
+    <p>We'll focus on how robots can interact with humans through gestures. We'll teach NAO to <strong>shake hands</strong>, give a <strong>high five</strong>, and <strong>wave goodbye</strong> — all triggered by voice commands.</p>
+
+    <h2>Voice-Triggered Gestures</h2>
+    <p>The setup uses speech recognition with a Switch Case box. The word list is "hello;high five;goodbye" and each word triggers a different keyframe motion:</p>
+    <ul>
+      <li><strong>"hello"</strong> &rarr; Handshake motion</li>
+      <li><strong>"high five"</strong> &rarr; High five motion (arm raised, hand open)</li>
+      <li><strong>"goodbye"</strong> &rarr; Wave motion (you can use the built-in Hello motion box)</li>
+    </ul>
+    <p>After each action, the speech recognition box reconnects to itself so NAO keeps listening for the next command.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Voice-Controlled Greetings</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-hri-greet"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['hri-greet-editor'] && editors['hri-greet-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['hri-greet-editor'] && editors['hri-greet-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['hri-greet-editor'] && editors['hri-greet-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hri-greet-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-hri-greet"></div>
+          <div class="try-it-output" id="output-hri-greet"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#hri-intro" class="page-nav-prev">&larr; Human-Robot Interaction</a>
+      <a href="#hri-peekaboo" class="page-nav-next">Peek-a-Boo &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-hri-peekaboo" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-peekaboo">Peek-a-Boo</a></div>
+    <h1>Peek-a-Boo</h1>
+    <p>Next, we'll make NAO play the children's game "peek-a-boo." The game cycle works like this:</p>
+    <ol>
+      <li>NAO hides its face with its hands</li>
+      <li>NAO says "Where am I?"</li>
+      <li>Speech recognition listens for "peek a boo"</li>
+      <li>NAO removes hands from face and says "You found me! Now you hide."</li>
+      <li>Face detection waits for a face to appear</li>
+      <li>NAO says "Peek a boo! I see you!"</li>
+      <li>Repeat from step 1</li>
+    </ol>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Peek-a-Boo Game</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-hri-peek"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['hri-peek-editor'] && editors['hri-peek-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['hri-peek-editor'] && editors['hri-peek-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['hri-peek-editor'] && editors['hri-peek-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hri-peek-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-hri-peek"></div>
+          <div class="try-it-output" id="output-hri-peek"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#hri-greetings" class="page-nav-prev">&larr; Greetings</a>
+      <a href="#hri-storytelling" class="page-nav-next">Storytelling &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-hri-storytelling" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-storytelling">Storytelling</a></div>
+    <h1>Storytelling</h1>
+    <p>Next, we'll make NAO either tell a story or act out a scene from a play. Choose a short scene or skit that interests you. You have all the skills needed — no step-by-step instructions this time. Here are some tips:</p>
+    <ul>
+      <li>If the scene has multiple characters, change the <strong>voice parameters</strong> (pitch, speed) and <strong>LED colors</strong> to differentiate them</li>
+      <li>Use <strong>expressive hand gestures</strong> and head movements</li>
+      <li>Use a <strong>variety of lights</strong> for mood and emphasis</li>
+      <li>Try including <strong>sound effects</strong></li>
+      <li>Use <strong>"Wait for Signals"</strong> boxes to wait for speech and motion to finish before the next action</li>
+      <li>Use <strong>"Wait" boxes</strong> to insert dramatic pauses</li>
+      <li>Be creative!</li>
+    </ul>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>NAO Storyteller</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-hri-story"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['hri-story-editor'] && editors['hri-story-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['hri-story-editor'] && editors['hri-story-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['hri-story-editor'] && editors['hri-story-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('hri-story-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-hri-story"></div>
+          <div class="try-it-output" id="output-hri-story"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#hri-peekaboo" class="page-nav-prev">&larr; Peek-a-Boo</a>
+      <a href="#hri-exercises" class="page-nav-next">Exercises &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-hri-exercises" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-exercises">Exercises</a></div>
+    <h1>Exercises</h1>
+    <p>Combine everything you've learned to create interactive robot behaviors.</p>
+
+    <div class="exercise-card">
+      <h3>Exercise 1: Rock Paper Scissors</h3>
+      <div class="exercise-prompt">Make NAO play rock paper scissors. Think carefully about how to modify the hand and arm gestures for each choice — rock (closed fist), paper (open hand), scissors (two fingers extended).</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 1 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-hri-ex1"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['hri-ex1-editor'] && editors['hri-ex1-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex1-editor'] && editors['hri-ex1-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex1-editor'] && editors['hri-ex1-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('hri-ex1-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-hri-ex1"></div>
+            <div class="try-it-output" id="output-hri-ex1"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Use <code>random.choice(["rock", "paper", "scissors"])</code> for NAO's choice. Open/close the hand with <code>motion.openHand("RHand")</code> / <code>motion.closeHand("RHand")</code>. Raise the arm first, count "rock, paper, scissors!" then show the gesture.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>import random
+from naoqi import ALProxy
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+import time
+
+choices = ["rock", "paper", "scissors"]
+nao_choice = random.choice(choices)
+
+# Raise arm
+motion.angleInterpolation("RShoulderPitch", [-0.5], [0.5], True)
+
+# Count down
+for word in ["Rock!", "Paper!", "Scissors!"]:
+    tts.say(word)
+    time.sleep(0.5)
+
+# Show gesture
+if nao_choice == "rock":
+    motion.closeHand("RHand")
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+elif nao_choice == "paper":
+    motion.openHand("RHand")
+    leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+else:
+    motion.openHand("RHand")
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+
+tts.say("I chose " + nao_choice + "!")
+motion.angleInterpolation("RShoulderPitch", [1.4], [0.5], True)
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 2: Robot Skit</h3>
+      <div class="exercise-prompt">Program NAO to perform a short skit with at least 2 characters. Use different voice parameters (pitch, speed) and LED colors per character. Include gestures and dramatic pauses.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 2 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-hri-ex2"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['hri-ex2-editor'] && editors['hri-ex2-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex2-editor'] && editors['hri-ex2-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex2-editor'] && editors['hri-ex2-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('hri-ex2-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-hri-ex2"></div>
+            <div class="try-it-output" id="output-hri-ex2"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Create helper functions for each character: <code>character_a(line)</code> and <code>character_b(line)</code>. Each sets the voice pitch with <code>tts.setParameter("pitchShift", value)</code>, LED color, then speaks. Use <code>time.sleep()</code> for pauses.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+
+def character_a(line):
+    tts.setParameter("pitchShift", 1.0)
+    leds.fadeRGB("FaceLeds", 0x0000FF, 0.3)
+    tts.say(line)
+
+def character_b(line):
+    tts.setParameter("pitchShift", 1.4)
+    leds.fadeRGB("FaceLeds", 0xFF0000, 0.3)
+    tts.say(line)
+
+# The skit
+character_a("Knock knock!")
+time.sleep(1.0)
+character_b("Who's there?")
+character_a("NAO.")
+character_b("NAO who?")
+time.sleep(0.5)
+character_a("NAO way I'm telling you!")
+motion.angleInterpolation("HeadYaw", [0.5, -0.5, 0.0], [0.3, 0.6, 0.9], True)
+leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+tts.setParameter("pitchShift", 1.0)
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 3: Interactive Greeter</h3>
+      <div class="exercise-prompt">Bring NAOs to an elementary school, and show the class projects to the children. Combine face detection with greetings — NAO detects a face, waves, and has a short voice-controlled conversation.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 3 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-hri-ex3"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['hri-ex3-editor'] && editors['hri-ex3-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex3-editor'] && editors['hri-ex3-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['hri-ex3-editor'] && editors['hri-ex3-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('hri-ex3-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-hri-ex3"></div>
+            <div class="try-it-output" id="output-hri-ex3"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Combine face detection (Module 8) with speech recognition (Module 3) and gestures. First detect a face, then wave, then use speech recognition for a Q&amp;A loop with responses like "My name is NAO" or "I am a robot."</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import time
+
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+leds = ALProxy("ALLeds", "&lt;robot_ip&gt;", 9559)
+face = ALProxy("ALFaceDetection", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+
+face.subscribe("Greeter")
+leds.fadeRGB("FaceLeds", 0xFFFF00, 0.3)
+tts.say("Looking for someone to talk to!")
+
+# Wait for face
+data = memory.getData("FaceDetected")
+if data and len(data) > 0:
+    leds.fadeRGB("FaceLeds", 0x00FF00, 0.3)
+    tts.say("Hi there! I'm NAO!")
+
+    # Wave
+    motion.angleInterpolation("RShoulderPitch", [-1.0], [0.5], True)
+    motion.angleInterpolation("RShoulderRoll", [-0.3, 0.3, 0.0], [0.3, 0.6, 0.9], True)
+    motion.angleInterpolation("RShoulderPitch", [1.4], [0.5], True)
+
+    tts.say("Nice to meet you! Say goodbye when you want me to stop.")
+    tts.say("Goodbye everyone! Thanks for visiting!")
+
+face.unsubscribe("Greeter")
+leds.fadeRGB("FaceLeds", 0x000000, 0.3)</code></pre></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#hri-storytelling" class="page-nav-prev">&larr; Storytelling</a>
+      <a href="#hri-questions" class="page-nav-next">Module Questions &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-hri-questions" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 10 — Human-Robot Interaction &gt; <a href="#hri-questions">Module Questions</a></div>
+    <h1>Module Questions</h1>
+    <p>Test your understanding of Module 10 by answering the questions below.</p>
+
+    <h2>Basic</h2>
+    <div class="quiz-question"><span class="q-number">1.</span><span class="q-text">Describe human-robot interaction.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Human-robot interaction (HRI) is the study of interactions between humans and robots. It combines robotics and psychology to answer questions about how humans can better control robots, how humans and robots can work together, and how we can improve the overall experience of using robots.</div></div>
+    <div class="quiz-question"><span class="q-number">2.</span><span class="q-text">Give an example of a robot that interacts with people.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Examples include: self-parking cars (interact with the driver), robot vacuum cleaners (respond to user schedules), NAO (humanoid robot for education and entertainment), Pepper (SoftBank's customer service robot), surgical robots (work alongside surgeons), and industrial cobots (collaborative robots that work alongside factory workers).</div></div>
+
+    <h2>Intermediate</h2>
+    <div class="quiz-question"><span class="q-number">3.</span><span class="q-text">Give a reason why humans find NAO an appealing robot.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">NAO is appealing because of its <strong>humanoid shape</strong> — it has two arms, two legs, a head with eyes, and is designed to look "cute." This humanoid form makes people naturally want to interact with it, unlike industrial robots which are functional but not inviting. NAO's size (58cm) also makes it non-threatening, especially to children.</div></div>
+
+    <h2>Advanced</h2>
+    <div class="quiz-question"><span class="q-number">4.</span><span class="q-text">Discuss how multiple robots would need to cooperate to enact a play together.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Multiple robots would need: (1) <strong>Synchronization</strong> — a shared clock or signal system so robots know when to speak and move (e.g., Wait for Signals boxes). (2) <strong>Turn-taking</strong> — robots must not speak simultaneously; one speaks while others wait. (3) <strong>Positioning</strong> — robots need to face the audience and each other appropriately. (4) <strong>Communication</strong> — a central script or networked messaging to coordinate cues. (5) <strong>Differentiation</strong> — different voice parameters and LED colors so the audience can distinguish characters.</div></div>
+
+    <div class="page-nav">
+      <a href="#hri-exercises" class="page-nav-prev">&larr; Exercises</a>
+      <a href="#nav-mazes" class="page-nav-next">Solving Mazes &rarr;</a>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 11 — FINDING YOUR WAY ==================== -->
+
+  <div id="page-nav-mazes" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-mazes">Solving Mazes</a></div>
+    <h1>Solving Mazes</h1>
+    <p>Many of us have experience solving mazes on paper. There is a defined start and goal, and we want to find a path from the start to the end. However, solving a maze on paper is different from solving a maze while you are in it.</p>
+    <p>If you have walked in a hedge maze, you know what it's like — there is no map of the entire maze, so you don't know beforehand if taking a left or right turn is correct. Furthermore, it is difficult to keep track of where you have been, which can cause you to go around in circles.</p>
+    <p>There are many algorithms to help solve mazes. There are algorithms for cases where you know the map (like on paper), and when you don't (like in a hedge maze). We will explore several of these algorithms.</p>
+
+    <h2>Dead-End Filling</h2>
+    <p>One algorithm for solving a maze when you have the map is called <strong>dead-end filling</strong>. The idea is to find dead ends in the maze and fill them up. This process repeats until no more dead ends exist. The remaining unfilled squares form the solution path from start to goal.</p>
+
+    <div class="page-nav">
+      <a href="#hri-questions" class="page-nav-prev">&larr; Module Questions</a>
+      <a href="#nav-visual-cues" class="page-nav-next">Maze Solving with Visual Cues &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-nav-visual-cues" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-visual-cues">Maze Solving with Visual Cues</a></div>
+    <h1>Maze Solving with Visual Cues</h1>
+    <p>In this exercise, NAO will be placed in a maze, and the goal is for NAO to walk from start to end. We use the human brain to solve the maze, then use <strong>visual cues</strong> (NAOMarks) to guide NAO through it.</p>
+
+    <h2>How It Works</h2>
+    <ol>
+      <li>Solve the maze on paper first — find the path from start to goal</li>
+      <li>Place NAOMarks at every junction where NAO needs to turn left</li>
+      <li>Place a different set of NAOMarks where NAO needs to turn right</li>
+      <li>When NAO sees no NAOMark, it walks forward</li>
+      <li>When a NAOMark is detected, NAO turns left or right depending on the mark ID</li>
+    </ol>
+    <p>NAO uses its <strong>bottom camera</strong> (chin) to look at the ground for NAOMarks while walking. A Timer box triggers forward walking every few seconds, while a NAOMark box continuously checks for marks.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>NAOMark Maze Navigator</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-nav-cues"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['nav-cues-editor'] && editors['nav-cues-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['nav-cues-editor'] && editors['nav-cues-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['nav-cues-editor'] && editors['nav-cues-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('nav-cues-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-nav-cues"></div>
+          <div class="try-it-output" id="output-nav-cues"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#nav-mazes" class="page-nav-prev">&larr; Solving Mazes</a>
+      <a href="#nav-wall-follow" class="page-nav-next">Wall Following Algorithm &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-nav-wall-follow" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-wall-follow">Wall Following Algorithm</a></div>
+    <h1>Wall Following Algorithm</h1>
+    <p>What if you don't have a map? We can use the <strong>wall following algorithm</strong> (also known as the right-hand rule). The concept is simple: as you walk in the maze, keep your right hand in contact with the wall at all times.</p>
+
+    <h2>The Right-Hand Rule</h2>
+    <ol>
+      <li><strong>No wall to the right?</strong> &rarr; Turn 90&deg; right, then walk forward</li>
+      <li><strong>Wall to the right, no wall in front?</strong> &rarr; Walk forward</li>
+      <li><strong>Wall to the right AND wall in front?</strong> &rarr; Turn 90&deg; left</li>
+    </ol>
+    <p>This algorithm is guaranteed to find the exit provided the maze is <strong>simply connected</strong> — all walls are connected to the boundary.</p>
+
+    <h2>Using Head Sensors for Wall Detection</h2>
+    <p>We use NAO's head touch sensors to input the state of the environment:</p>
+    <ul>
+      <li><strong>Front button</strong> — there is a wall in front</li>
+      <li><strong>Rear button</strong> — there is a wall to the right</li>
+      <li><strong>Middle button</strong> — execute the next action</li>
+    </ul>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>Wall Following Algorithm</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-nav-wall"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['nav-wall-editor'] && editors['nav-wall-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['nav-wall-editor'] && editors['nav-wall-editor'].resetCode()">Reset</button>
+          <button class="btn btn-reset" onclick="editors['nav-wall-editor'] && editors['nav-wall-editor'].stop()">Stop</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('nav-wall-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-preview">
+          <div class="try-it-3d-container" id="preview-nav-wall"></div>
+          <div class="try-it-output" id="output-nav-wall"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#nav-visual-cues" class="page-nav-prev">&larr; Maze Solving with Visual Cues</a>
+      <a href="#nav-bfs" class="page-nav-next">Finding the Shortest Path &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-nav-bfs" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-bfs">Finding the Shortest Path</a></div>
+    <h1>Finding the Shortest Path</h1>
+    <p>Another algorithm to solve a known maze is called <strong>breadth-first search (BFS)</strong>. Unlike dead-end filling, BFS finds the <strong>shortest path</strong> from start to goal.</p>
+
+    <h2>How BFS Works</h2>
+    <ol>
+      <li>Add the starting position to a queue, give it value 1</li>
+      <li>Remove the front node from the queue, save its value as <em>i</em></li>
+      <li>If this node is the goal, go to step 7</li>
+      <li>Otherwise, examine all neighbors. If a neighbor hasn't been visited, add it to the queue with value <em>i + 1</em></li>
+      <li>If the queue is empty, there is no path from start to goal</li>
+      <li>Go to step 2</li>
+      <li>The goal has been found with value <em>i</em>. Trace back by finding neighbors with decreasing values (<em>i-1, i-2, ...</em>) until reaching value 1 (the start)</li>
+    </ol>
+    <p>The traced path is the <strong>shortest path</strong> from start to goal.</p>
+
+    <div class="try-it-container">
+      <div class="try-it-header"><span>BFS Maze Solver</span></div>
+      <div class="try-it-body">
+        <div class="try-it-editor" id="editor-nav-bfs"></div>
+        <div class="try-it-controls">
+          <button class="btn btn-run" onclick="editors['nav-bfs-editor'] && editors['nav-bfs-editor'].run()">Run</button>
+          <button class="btn btn-reset" onclick="editors['nav-bfs-editor'] && editors['nav-bfs-editor'].resetCode()">Reset</button>
+          <button class="btn btn-copy" onclick="copyEditorCode('nav-bfs-editor', this)">Copy Code</button>
+        </div>
+        <div class="try-it-output" id="output-nav-bfs" style="min-height:120px;"></div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#nav-wall-follow" class="page-nav-prev">&larr; Wall Following Algorithm</a>
+      <a href="#nav-exercises" class="page-nav-next">Exercises &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-nav-exercises" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-exercises">Exercises</a></div>
+    <h1>Exercises</h1>
+    <p>Apply your maze-solving knowledge with these challenges.</p>
+
+    <div class="exercise-card">
+      <h3>Exercise 1: Wall Follower with State Machine</h3>
+      <div class="exercise-prompt">Complete the wall-following advanced task without using Python. Use a finite state machine (from Module 5) to keep track of which head buttons have been pressed, and trigger the correct walking action.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 1 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-nav-ex1"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['nav-ex1-editor'] && editors['nav-ex1-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['nav-ex1-editor'] && editors['nav-ex1-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['nav-ex1-editor'] && editors['nav-ex1-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('nav-ex1-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-nav-ex1"></div>
+            <div class="try-it-output" id="output-nav-ex1"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Create states: IDLE, FRONT_PRESSED, REAR_PRESSED, BOTH_PRESSED. Transition between states on button presses. When the middle button is pressed, check the current state and execute the matching wall-following action.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import math
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+memory = ALProxy("ALMemory", "&lt;robot_ip&gt;", 9559)
+
+front = False
+rear = False
+forward_dist = 0.1
+
+# Simulated button sequence: rear then middle (wall right, no front)
+tts.say("Wall to the right, path ahead. Walking forward.")
+motion.walkTo(forward_dist, 0, 0)
+
+# Simulated: no buttons then middle (no walls)
+front = False
+rear = False
+tts.say("No wall to the right. Turning right.")
+motion.walkTo(0, 0, -math.pi/2)
+motion.walkTo(forward_dist, 0, 0)
+
+# Simulated: front + rear then middle (walls on both sides)
+front = True
+rear = True
+tts.say("Walls ahead and right. Turning left.")
+motion.walkTo(0, 0, math.pi/2)
+
+tts.say("Maze step complete.")</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 2: Left-Hand Rule</h3>
+      <div class="exercise-prompt">Change the wall-following algorithm to use left-hand-following instead of right-hand-following. Swap the logic so NAO keeps its left hand on the wall.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 2 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-nav-ex2"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['nav-ex2-editor'] && editors['nav-ex2-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['nav-ex2-editor'] && editors['nav-ex2-editor'].resetCode()">Reset</button>
+            <button class="btn btn-reset" onclick="editors['nav-ex2-editor'] && editors['nav-ex2-editor'].stop()">Stop</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('nav-ex2-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-preview">
+            <div class="try-it-3d-container" id="preview-nav-ex2"></div>
+            <div class="try-it-output" id="output-nav-ex2"></div>
+          </div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Mirror the right-hand rule: (1) No wall to the LEFT? Turn left and walk. (2) Wall left, no wall front? Walk forward. (3) Wall left AND wall front? Turn right. Swap all right turns to left turns and vice versa.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code>from naoqi import ALProxy
+import math
+
+motion = ALProxy("ALMotion", "&lt;robot_ip&gt;", 9559)
+tts = ALProxy("ALTextToSpeech", "&lt;robot_ip&gt;", 9559)
+
+front = False   # Wall in front?
+left = False    # Wall to the left?
+forward_dist = 0.1
+
+def compute_next_action():
+    if not left:  # No wall to the left
+        tts.say("Turning left")
+        motion.walkTo(0, 0, math.pi/2)   # Turn left
+        motion.walkTo(forward_dist, 0, 0)  # Walk forward
+    elif left and not front:  # Wall left, no wall front
+        tts.say("Walking forward")
+        motion.walkTo(forward_dist, 0, 0)
+    else:  # Wall left AND wall front
+        tts.say("Turning right")
+        motion.walkTo(0, 0, -math.pi/2)  # Turn right
+
+# Test: no wall to the left
+left = False
+front = False
+compute_next_action()
+
+# Test: wall left, no wall front
+left = True
+front = False
+compute_next_action()
+
+# Test: walls on both sides
+left = True
+front = True
+compute_next_action()</code></pre></div>
+    </div>
+
+    <div class="exercise-card">
+      <h3>Exercise 3: BFS Maze Solver</h3>
+      <div class="exercise-prompt">Implement the breadth-first search algorithm in Python to find the shortest path through a grid maze. Print the path from start to goal.</div>
+      <div class="try-it-container" style="margin-top: 16px;">
+        <div class="try-it-header"><span>Exercise 3 — Code Editor</span></div>
+        <div class="try-it-body">
+          <div class="try-it-editor" id="editor-nav-ex3"></div>
+          <div class="try-it-controls">
+            <button class="btn btn-run" onclick="editors['nav-ex3-editor'] && editors['nav-ex3-editor'].run()">Run</button>
+            <button class="btn btn-reset" onclick="editors['nav-ex3-editor'] && editors['nav-ex3-editor'].resetCode()">Reset</button>
+            <button class="btn btn-copy" onclick="copyEditorCode('nav-ex3-editor', this)">Copy Code</button>
+          </div>
+          <div class="try-it-output" id="output-nav-ex3" style="min-height:120px;"></div>
+        </div>
+      </div>
+      <button class="hint-toggle" onclick="toggleHint(this)">Show Hint</button>
+      <div class="hint-content"><p>Use a list as a queue (<code>queue.append()</code> and <code>queue.pop(0)</code>). Track visited cells in a dictionary mapping position to its BFS value. Check all 4 neighbors (up/down/left/right). To trace back, start at the goal and find neighbors with decreasing values.</p></div>
+      <button class="answer-toggle" onclick="toggleAnswer(this)">Show Answer</button>
+      <div class="answer-content"><pre><code># BFS Maze Solver
+# 0 = open path, 1 = wall
+maze = [
+    [0, 0, 1, 0, 0],
+    [1, 0, 1, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+]
+
+start = (0, 0)
+goal = (4, 4)
+rows, cols = len(maze), len(maze[0])
+
+# BFS
+queue = [start]
+visited = {start: 1}
+
+while queue:
+    r, c = queue.pop(0)
+    val = visited[(r, c)]
+
+    if (r, c) == goal:
+        break
+
+    for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+        nr, nc = r + dr, c + dc
+        if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols:
+            if maze[nr][nc] == 0 and (nr, nc) not in visited:
+                visited[(nr, nc)] = val + 1
+                queue.append((nr, nc))
+
+# Trace back shortest path
+if goal in visited:
+    path = [goal]
+    r, c = goal
+    val = visited[goal]
+    while (r, c) != start:
+        for dr, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+            nr, nc = r + dr, c + dc
+            if (nr, nc) in visited and visited[(nr, nc)] == val - 1:
+                path.append((nr, nc))
+                r, c = nr, nc
+                val -= 1
+                break
+    path.reverse()
+    print("Shortest path:", path)
+    print("Length:", len(path) - 1, "steps")
+else:
+    print("No path found!")</code></pre></div>
+    </div>
+
+    <div class="page-nav">
+      <a href="#nav-bfs" class="page-nav-prev">&larr; Finding the Shortest Path</a>
+      <a href="#nav-questions" class="page-nav-next">Module Questions &rarr;</a>
+    </div>
+  </div>
+
+  <div id="page-nav-questions" class="page-section" style="display:none;">
+    <div class="breadcrumb">Module 11 — Finding Your Way &gt; <a href="#nav-questions">Module Questions</a></div>
+    <h1>Module Questions</h1>
+    <p>Test your understanding of Module 11 by answering the questions below.</p>
+
+    <h2>Basic</h2>
+    <div class="quiz-question"><span class="q-number">1.</span><span class="q-text">Describe the dead-end filling algorithm in your own words.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Dead-end filling works by repeatedly finding dead ends in a maze and filling them in. A dead end is a cell with only one open neighbor. When filled, it may create new dead ends, which are also filled. This continues until no dead ends remain. The unfilled cells form the solution path from start to goal.</div></div>
+    <div class="quiz-question"><span class="q-number">2.</span><span class="q-text">Why does the dead-end algorithm work?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Dead ends can never be part of the solution path, because a solution path must pass <em>through</em> each cell (entering and exiting). A dead end only has one opening, so you'd have to backtrack. By removing all dead ends, only the "through" paths remain, which must include the solution.</div></div>
+
+    <h2>Intermediate</h2>
+    <div class="quiz-question"><span class="q-number">3.</span><span class="q-text">After dead-end filling, if there isn't a single direct path to the goal, what do the non-filled squares represent?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">The non-filled squares represent <strong>all possible solution paths</strong> through the maze. If multiple routes exist between start and goal, dead-end filling preserves all of them (it only removes paths that lead nowhere). The remaining cells form the set of all valid paths.</div></div>
+
+    <h2>Advanced</h2>
+    <div class="quiz-question"><span class="q-number">4.</span><span class="q-text">Describe the wall-following algorithm in your own words.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">The wall-following algorithm (right-hand rule) works by keeping your right hand on the wall at all times. At each step: if there's no wall to the right, turn right and walk forward; if there's a wall on the right but not in front, walk forward; if there are walls on both the right and in front, turn left. By consistently following the wall, you're guaranteed to reach the exit.</div></div>
+    <div class="quiz-question"><span class="q-number">5.</span><span class="q-text">In what cases does the wall-following algorithm fail? Why?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Wall-following fails when the maze is <strong>not simply connected</strong> — meaning there are walls or "islands" that are not connected to the outer boundary. In such mazes, you can end up following an island wall in circles and never reach the exit. The algorithm only works when all walls are connected to the maze boundary.</div></div>
+    <div class="quiz-question"><span class="q-number">6.</span><span class="q-text">Does the wall-following algorithm find the shortest path from start to goal?</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer"><strong>No.</strong> Wall-following finds <em>a</em> path, but not necessarily the shortest one. It explores by following walls, which can lead to very long detours. For the shortest path, you need an algorithm like <strong>breadth-first search (BFS)</strong>, which systematically explores all paths by distance and is guaranteed to find the shortest one.</div></div>
+    <div class="quiz-question"><span class="q-number">7.</span><span class="q-text">Create a maze where the right-hand rule would find a much shorter path than the left-hand rule.</span><button class="quiz-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button><div class="quiz-answer">Imagine a maze where the start is at the top-left and the goal is at the top-right, with the path along the top being open. A wall blocks the left side shortly after the start. The right-hand rule would follow the top wall directly to the goal (short path), while the left-hand rule would follow the left wall downward, around the entire maze, before reaching the goal (very long path).</div></div>
+
+    <div class="page-nav">
+      <a href="#nav-exercises" class="page-nav-prev">&larr; Exercises</a>
+      <a href="#" class="page-nav-next nav-disabled">All Modules Complete!</a>
     </div>
   </div>
 
